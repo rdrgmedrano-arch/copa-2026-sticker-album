@@ -10,7 +10,6 @@
       --green: #00c06b;
       --gold: #f5c518;
       --blue: #1a6ef5;
-      --red: #e63946;
       --bg: #0d0d0d;
       --surface: #161616;
       --surface2: #1f1f1f;
@@ -24,97 +23,40 @@
       --dup-color: #e0a020;
       --dup-bg: #2a1e00;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    /* ── HEADER ── */
     header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 1.25rem 1.5rem;
+      padding: 1rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
       flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .header-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .header-title .badge {
-      background: var(--gold);
-      color: #000;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 13px;
-      letter-spacing: 1px;
-      padding: 3px 10px;
-      border-radius: 4px;
-    }
-    .header-title h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-      letter-spacing: 2px;
-      color: var(--text);
-      line-height: 1;
-    }
-    .header-title span {
-      color: var(--gold);
-    }
-
-    /* ── PLAYER TOGGLE ── */
-    .player-bar {
-      display: flex;
-      gap: 8px;
-    }
-    .ptog {
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      border: 1.5px solid var(--border);
-      background: var(--surface2);
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.3px;
-    }
+    .header-title { display: flex; align-items: center; gap: 12px; }
+    .badge { background: var(--gold); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 1px; padding: 3px 10px; border-radius: 4px; }
+    .header-title h1 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; color: var(--text); line-height: 1; }
+    .header-title span { color: var(--gold); }
+    .player-bar { display: flex; gap: 8px; }
+    .ptog { padding: 7px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; border: 1.5px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; transition: all 0.2s; }
     .ptog:hover { border-color: #444; color: var(--text); }
     .ptog.sel-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
     .ptog.sel-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
 
-    /* ── MAIN ── */
-    main { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+    main { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
 
-    /* ── CARDS ── */
-    .profiles {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 1.5rem;
-    }
-    .profile-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-    }
+    .profiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+    .profile-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; transition: border-color 0.2s; }
     .profile-card.active-r { border-color: var(--r-color); }
     .profile-card.active-l { border-color: var(--l-color); }
     .ph { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .avatar {
-      width: 38px; height: 38px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Bebas Neue', sans-serif; font-size: 18px;
-    }
+    .avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 18px; }
     .av-r { background: var(--r-bg); color: var(--r-color); border: 1.5px solid var(--r-color); }
     .av-l { background: var(--l-bg); color: var(--l-color); border: 1.5px solid var(--l-color); }
     .pname { font-size: 16px; font-weight: 600; }
@@ -131,39 +73,24 @@
     .fill-r { background: var(--r-color); }
     .fill-l { background: var(--l-color); }
 
-    /* ── TABS ── */
+    /* GROUP SELECTOR */
+    .group-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+    .grp-btn { padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; letter-spacing: 0.5px; transition: all 0.15s; }
+    .grp-btn:hover { color: var(--text); border-color: #444; }
+    .grp-btn.active-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
+    .grp-btn.active-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
+
+    /* TABS */
     .tabs-wrap { overflow-x: auto; margin-bottom: 1rem; padding-bottom: 4px; }
     .tabs { display: flex; gap: 6px; width: max-content; }
-    .tab {
-      padding: 6px 14px;
-      border-radius: 99px;
-      font-size: 12px;
-      font-weight: 500;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--muted);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.15s;
-    }
+    .tab { padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 500; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.15s; }
     .tab:hover { color: var(--text); border-color: #444; }
     .tab.active-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
     .tab.active-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
 
-    /* ── SEC INFO ── */
-    .sec-info {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
+    .sec-info { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
 
-    /* ── LEGENDA ── */
-    .legenda {
-      display: flex; gap: 14px; flex-wrap: wrap;
-      font-size: 12px; color: var(--muted);
-      align-items: center;
-      margin-bottom: 10px;
-    }
+    .legenda { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); align-items: center; margin-bottom: 10px; }
     .leg-item { display: flex; align-items: center; gap: 5px; }
     .leg-box { width: 13px; height: 13px; border-radius: 3px; border: 1px solid #333; }
     .leg-vazia { background: var(--surface2); }
@@ -171,63 +98,23 @@
     .leg-l { background: var(--l-bg); border-color: var(--l-color); }
     .leg-dup { background: var(--dup-bg); border-color: var(--dup-color); }
 
-    /* ── GRID ── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
-      gap: 5px;
-    }
-    .fig {
-      aspect-ratio: 3/4;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.1s, background 0.15s;
-    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 5px; }
+    .fig { aspect-ratio: 3/4; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; user-select: none; transition: transform 0.1s, background 0.15s; }
     .fig:hover { transform: scale(1.07); }
     .fig.sim-r { background: var(--r-bg); border-color: var(--r-color); color: var(--r-color); }
     .fig.sim-l { background: var(--l-bg); border-color: var(--l-color); color: var(--l-color); }
     .fig.dupla { background: var(--dup-bg); border-color: var(--dup-color); color: var(--dup-color); }
 
-    /* ── TROCA SECTION ── */
-    .troca-section {
-      margin-top: 2rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.25rem;
-    }
-    .troca-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px;
-      letter-spacing: 1.5px;
-      margin-bottom: 1rem;
-      color: var(--gold);
-    }
+    .troca-section { margin-top: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+    .troca-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; margin-bottom: 1rem; color: var(--gold); }
     .troca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .troca-col h4 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
     .troca-col.col-r h4 { color: var(--r-color); }
     .troca-col.col-l h4 { color: var(--l-color); }
-    .troca-list { font-size: 12px; color: var(--muted); line-height: 1.8; word-break: break-all; }
+    .troca-list { font-size: 12px; color: var(--muted); line-height: 1.8; }
     .troca-empty { font-size: 12px; color: var(--muted); font-style: italic; }
 
-    /* ── FOOTER ── */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 12px;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
-    }
+    footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem; }
 
     @media (max-width: 540px) {
       .profiles { grid-template-columns: 1fr; }
@@ -250,13 +137,9 @@
 </header>
 
 <main>
-  <!-- CARDS -->
   <div class="profiles">
     <div class="profile-card active-r" id="card-r">
-      <div class="ph">
-        <div class="avatar av-r">R</div>
-        <div class="pname">Rafael</div>
-      </div>
+      <div class="ph"><div class="avatar av-r">R</div><div class="pname">Rafael</div></div>
       <div class="stats">
         <div class="stat"><div class="stat-num stat-num-r" id="total-r">0</div><div class="stat-label">coladas</div></div>
         <div class="stat"><div class="stat-num stat-num-r" id="falta-r">980</div><div class="stat-label">faltam</div></div>
@@ -268,10 +151,7 @@
       </div>
     </div>
     <div class="profile-card" id="card-l">
-      <div class="ph">
-        <div class="avatar av-l">L</div>
-        <div class="pname">Leonardo</div>
-      </div>
+      <div class="ph"><div class="avatar av-l">L</div><div class="pname">Leonardo</div></div>
       <div class="stats">
         <div class="stat"><div class="stat-num stat-num-l" id="total-l">0</div><div class="stat-label">coladas</div></div>
         <div class="stat"><div class="stat-num stat-num-l" id="falta-l">980</div><div class="stat-label">faltam</div></div>
@@ -284,11 +164,13 @@
     </div>
   </div>
 
-  <!-- TABS -->
+  <!-- GROUP FILTER -->
+  <div class="group-bar" id="group-bar"></div>
+
+  <!-- TEAM TABS -->
   <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
   <div class="sec-info" id="sec-info"></div>
 
-  <!-- LEGENDA -->
   <div class="legenda">
     <div class="leg-item"><div class="leg-box leg-vazia"></div>vazia</div>
     <div class="leg-item"><div class="leg-box leg-r"></div>Rafael</div>
@@ -296,62 +178,106 @@
     <div class="leg-item"><div class="leg-box leg-dup"></div>repetida</div>
   </div>
 
-  <!-- GRID -->
   <div class="grid" id="grid"></div>
 
-  <!-- TROCAS -->
   <div class="troca-section">
     <div class="troca-title">🔄 Trocas entre Irmãos</div>
     <div class="troca-grid">
-      <div class="troca-col col-r">
-        <h4>Rafael pode dar ao Leonardo</h4>
-        <div id="troca-r" class="troca-empty">—</div>
-      </div>
-      <div class="troca-col col-l">
-        <h4>Leonardo pode dar ao Rafael</h4>
-        <div id="troca-l" class="troca-empty">—</div>
-      </div>
+      <div class="troca-col col-r"><h4>Rafael pode dar ao Leonardo</h4><div id="troca-r" class="troca-empty">—</div></div>
+      <div class="troca-col col-l"><h4>Leonardo pode dar ao Rafael</h4><div id="troca-l" class="troca-empty">—</div></div>
     </div>
   </div>
 </main>
 
-<footer>
-  Copa do Mundo FIFA 2026™ · Álbum Panini Oficial · 980 figurinhas · Rafael & Leonardo
-</footer>
+<footer>Copa do Mundo FIFA 2026™ · Álbum Panini Oficial · 980 figurinhas · Rafael & Leonardo</footer>
 
 <script>
-const TOTAL = 980;
-const secoes = [
-  { id: 'abertura',  nome: '🌍 Abertura',      de: 1,   ate: 18  },
-  { id: 'brasil',    nome: '🇧🇷 Brasil',        de: 19,  ate: 38  },
-  { id: 'argentina', nome: '🇦🇷 Argentina',     de: 39,  ate: 58  },
-  { id: 'franca',    nome: '🇫🇷 França',        de: 59,  ate: 78  },
-  { id: 'ingla',     nome: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra',  de: 79,  ate: 98  },
-  { id: 'alemanha',  nome: '🇩🇪 Alemanha',      de: 99,  ate: 118 },
-  { id: 'espanha',   nome: '🇪🇸 Espanha',       de: 119, ate: 138 },
-  { id: 'portugal',  nome: '🇵🇹 Portugal',      de: 139, ate: 158 },
-  { id: 'eua',       nome: '🇺🇸 EUA',           de: 159, ate: 178 },
-  { id: 'mexico',    nome: '🇲🇽 México',        de: 179, ate: 198 },
-  { id: 'canada',    nome: '🇨🇦 Canadá',        de: 199, ate: 218 },
-  { id: 'uruguai',   nome: '🇺🇾 Uruguai',       de: 219, ate: 238 },
-  { id: 'colombia',  nome: '🇨🇴 Colômbia',      de: 239, ate: 258 },
-  { id: 'marrocos',  nome: '🇲🇦 Marrocos',      de: 259, ate: 278 },
-  { id: 'japao',     nome: '🇯🇵 Japão',         de: 279, ate: 298 },
-  { id: 'grpAD',     nome: '📋 Grupos A–D',     de: 299, ate: 458 },
-  { id: 'grpEH',     nome: '📋 Grupos E–H',     de: 459, ate: 618 },
-  { id: 'grpIL',     nome: '📋 Grupos I–L',     de: 619, ate: 778 },
-  { id: 'estadios',  nome: '🏟️ Estádios',       de: 779, ate: 868 },
-  { id: 'especiais', nome: '✦ Especiais',       de: 869, ate: 912 },
-  { id: 'lendas',    nome: '🏆 Lendas',         de: 913, ate: 980 },
+// ── ESTRUTURA DO ÁLBUM (ordem oficial Panini 2026) ──
+// Abertura + Estádios/Especiais/Lendas são seções fixas.
+// 48 seleções × 18 figurinhas = 864 + 116 especiais/abertura/estádios = 980
+
+const ESPECIAIS = [
+  { id: 'abertura',  group: '★', nome: '🌍 Abertura',       de: 1,   ate: 18  },
+];
+const TIMES = [
+  // Grupo A
+  { id: 'mex',  group: 'A', nome: '🇲🇽 México',             de: 19,  ate: 36  },
+  { id: 'rsa',  group: 'A', nome: '🇿🇦 África do Sul',      de: 37,  ate: 54  },
+  { id: 'kor',  group: 'A', nome: '🇰🇷 Coreia do Sul',      de: 55,  ate: 72  },
+  { id: 'cze',  group: 'A', nome: '🇨🇿 Rep. Tcheca',        de: 73,  ate: 90  },
+  // Grupo B
+  { id: 'can',  group: 'B', nome: '🇨🇦 Canadá',             de: 91,  ate: 108 },
+  { id: 'bih',  group: 'B', nome: '🇧🇦 Bósnia e Herz.',     de: 109, ate: 126 },
+  { id: 'qat',  group: 'B', nome: '🇶🇦 Catar',              de: 127, ate: 144 },
+  { id: 'sui',  group: 'B', nome: '🇨🇭 Suíça',              de: 145, ate: 162 },
+  // Grupo C
+  { id: 'bra',  group: 'C', nome: '🇧🇷 Brasil',             de: 163, ate: 180 },
+  { id: 'mar',  group: 'C', nome: '🇲🇦 Marrocos',           de: 181, ate: 198 },
+  { id: 'hai',  group: 'C', nome: '🇭🇹 Haiti',              de: 199, ate: 216 },
+  { id: 'sco',  group: 'C', nome: '🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escócia',           de: 217, ate: 234 },
+  // Grupo D
+  { id: 'usa',  group: 'D', nome: '🇺🇸 EUA',                de: 235, ate: 252 },
+  { id: 'par',  group: 'D', nome: '🇵🇾 Paraguai',           de: 253, ate: 270 },
+  { id: 'aus',  group: 'D', nome: '🇦🇺 Austrália',          de: 271, ate: 288 },
+  { id: 'tur',  group: 'D', nome: '🇹🇷 Turquia',            de: 289, ate: 306 },
+  // Grupo E
+  { id: 'ger',  group: 'E', nome: '🇩🇪 Alemanha',           de: 307, ate: 324 },
+  { id: 'cur',  group: 'E', nome: '🇨🇼 Curaçao',            de: 325, ate: 342 },
+  { id: 'civ',  group: 'E', nome: '🇨🇮 Costa do Marfim',   de: 343, ate: 360 },
+  { id: 'ecu',  group: 'E', nome: '🇪🇨 Equador',            de: 361, ate: 378 },
+  // Grupo F
+  { id: 'ned',  group: 'F', nome: '🇳🇱 Holanda',            de: 379, ate: 396 },
+  { id: 'jpn',  group: 'F', nome: '🇯🇵 Japão',              de: 397, ate: 414 },
+  { id: 'swe',  group: 'F', nome: '🇸🇪 Suécia',             de: 415, ate: 432 },
+  { id: 'tun',  group: 'F', nome: '🇹🇳 Tunísia',            de: 433, ate: 450 },
+  // Grupo G
+  { id: 'bel',  group: 'G', nome: '🇧🇪 Bélgica',            de: 451, ate: 468 },
+  { id: 'egy',  group: 'G', nome: '🇪🇬 Egito',              de: 469, ate: 486 },
+  { id: 'irn',  group: 'G', nome: '🇮🇷 Irã',                de: 487, ate: 504 },
+  { id: 'nzl',  group: 'G', nome: '🇳🇿 Nova Zelândia',      de: 505, ate: 522 },
+  // Grupo H
+  { id: 'esp',  group: 'H', nome: '🇪🇸 Espanha',            de: 523, ate: 540 },
+  { id: 'cpv',  group: 'H', nome: '🇨🇻 Cabo Verde',         de: 541, ate: 558 },
+  { id: 'ksa',  group: 'H', nome: '🇸🇦 Arábia Saudita',     de: 559, ate: 576 },
+  { id: 'uru',  group: 'H', nome: '🇺🇾 Uruguai',            de: 577, ate: 594 },
+  // Grupo I
+  { id: 'fra',  group: 'I', nome: '🇫🇷 França',             de: 595, ate: 612 },
+  { id: 'sen',  group: 'I', nome: '🇸🇳 Senegal',            de: 613, ate: 630 },
+  { id: 'irq',  group: 'I', nome: '🇮🇶 Iraque',             de: 631, ate: 648 },
+  { id: 'nor',  group: 'I', nome: '🇳🇴 Noruega',            de: 649, ate: 666 },
+  // Grupo J
+  { id: 'arg',  group: 'J', nome: '🇦🇷 Argentina',          de: 667, ate: 684 },
+  { id: 'bol',  group: 'J', nome: '🇧🇴 Bolívia',            de: 685, ate: 702 },
+  { id: 'isl',  group: 'J', nome: '🇮🇸 Islândia',           de: 703, ate: 720 },
+  { id: 'nig',  group: 'J', nome: '🇳🇬 Nigéria',            de: 721, ate: 738 },
+  // Grupo K
+  { id: 'por',  group: 'K', nome: '🇵🇹 Portugal',           de: 739, ate: 756 },
+  { id: 'ang',  group: 'K', nome: '🇦🇴 Angola',             de: 757, ate: 774 },
+  { id: 'ven',  group: 'K', nome: '🇻🇪 Venezuela',          de: 775, ate: 792 },
+  { id: 'ukr',  group: 'K', nome: '🇺🇦 Ucrânia',            de: 793, ate: 810 },
+  // Grupo L
+  { id: 'eng',  group: 'L', nome: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra',        de: 811, ate: 828 },
+  { id: 'col',  group: 'L', nome: '🇨🇴 Colômbia',           de: 829, ate: 846 },
+  { id: 'pan',  group: 'L', nome: '🇵🇦 Panamá',             de: 847, ate: 864 },
+  { id: 'chi',  group: 'L', nome: '🇨🇱 Chile',              de: 865, ate: 882 },
+];
+const FIXAS = [
+  { id: 'estadios', group: '★', nome: '🏟️ Estádios',        de: 883, ate: 928 },
+  { id: 'especiais',group: '★', nome: '✦ Especiais',         de: 929, ate: 960 },
+  { id: 'lendas',   group: '★', nome: '🏆 Lendas',           de: 961, ate: 980 },
 ];
 
+const SECOES = [...ESPECIAIS, ...TIMES, ...FIXAS];
+const TOTAL = 980;
+const GRUPOS = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+
 let currentPlayer = 'r';
-let currentSec = 'abertura';
+let currentGroup = 'C'; // começa no Brasil
+let currentSec = 'bra';
 let state = {};
+try { state = JSON.parse(localStorage.getItem('copa2026_v3') || '{}'); } catch(e) {}
 
-try { state = JSON.parse(localStorage.getItem('copa2026_rl') || '{}'); } catch(e) {}
-
-function save() { try { localStorage.setItem('copa2026_rl', JSON.stringify(state)); } catch(e) {} }
+function save() { try { localStorage.setItem('copa2026_v3', JSON.stringify(state)); } catch(e) {} }
 function key(n, p) { return `${p}_${n}`; }
 
 function ciclar(n) {
@@ -364,10 +290,29 @@ function ciclar(n) {
   renderTrocas();
 }
 
+function renderGroups() {
+  const c = document.getElementById('group-bar');
+  c.innerHTML = '';
+  GRUPOS.forEach(g => {
+    const d = document.createElement('div');
+    d.className = 'grp-btn' + (g === currentGroup ? ` active-${currentPlayer}` : '');
+    d.textContent = g === '★' ? '★ Especiais' : 'Grupo ' + g;
+    d.onclick = () => {
+      currentGroup = g;
+      const first = SECOES.find(s => s.group === g);
+      if (first) currentSec = first.id;
+      renderGroups();
+      renderTabs();
+      renderGrid();
+    };
+    c.appendChild(d);
+  });
+}
+
 function renderTabs() {
   const c = document.getElementById('tabs');
   c.innerHTML = '';
-  secoes.forEach(s => {
+  SECOES.filter(s => s.group === currentGroup).forEach(s => {
     const d = document.createElement('div');
     d.className = 'tab' + (s.id === currentSec ? ` active-${currentPlayer}` : '');
     d.textContent = s.nome;
@@ -377,17 +322,18 @@ function renderTabs() {
 }
 
 function renderGrid() {
-  const sec = secoes.find(s => s.id === currentSec);
+  const sec = SECOES.find(s => s.id === currentSec);
+  if (!sec) return;
   const g = document.getElementById('grid');
-  document.getElementById('sec-info').textContent =
-    `Figurinhas ${sec.de}–${sec.ate} · ${sec.ate - sec.de + 1} cromos`;
+  const count = sec.ate - sec.de + 1;
+  document.getElementById('sec-info').textContent = `${sec.nome} · figurinhas ${sec.de}–${sec.ate} · ${count} cromos`;
   g.innerHTML = '';
   for (let i = sec.de; i <= sec.ate; i++) {
     const v = state[key(i, currentPlayer)] || 'nao';
     const d = document.createElement('div');
     d.className = 'fig' + (v === 'sim' ? ` sim-${currentPlayer}` : v === 'dupla' ? ' dupla' : '');
     d.textContent = i;
-    d.title = v === 'sim' ? 'Colada — clique p/ repetida' : v === 'dupla' ? 'Repetida — clique p/ remover' : 'Vazia';
+    d.title = v === 'sim' ? 'Colada — clique p/ repetida' : v === 'dupla' ? 'Repetida — clique p/ remover' : 'Vazia — clique p/ colar';
     d.onclick = () => ciclar(i);
     g.appendChild(d);
   }
@@ -409,13 +355,11 @@ function renderStats() {
     document.getElementById(`pct-${p}`).textContent = pct + '%';
     document.getElementById(`bar-${p}`).style.width = pct + '%';
   });
-  // highlight active card
   document.getElementById('card-r').className = 'profile-card' + (currentPlayer === 'r' ? ' active-r' : '');
   document.getElementById('card-l').className = 'profile-card' + (currentPlayer === 'l' ? ' active-l' : '');
 }
 
 function renderTrocas() {
-  // Rafael pode dar ao Leonardo: Rafael tem dupla E Leonardo não tem
   const rParaL = [], lParaR = [];
   for (let i = 1; i <= TOTAL; i++) {
     const r = state[key(i,'r')] || 'nao';
@@ -435,11 +379,13 @@ function setPlayer(p) {
   currentPlayer = p;
   document.getElementById('tog-r').className = 'ptog' + (p==='r'?' sel-r':'');
   document.getElementById('tog-l').className = 'ptog' + (p==='l'?' sel-l':'');
+  renderGroups();
   renderTabs();
   renderGrid();
   renderStats();
 }
 
+renderGroups();
 renderTabs();
 renderGrid();
 renderStats();
