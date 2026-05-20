@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⚽ Álbum Copa 2026 — Rafael & Leonardo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #00c06b;
+      --gold: #f5c518;
+      --blue: #1a6ef5;
+      --red: #e63946;
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --surface2: #1f1f1f;
+      --border: #2a2a2a;
+      --text: #f0f0f0;
+      --muted: #888;
+      --r-color: #378ADD;
+      --r-bg: #0d2340;
+      --l-color: #1D9E75;
+      --l-bg: #08271e;
+      --dup-color: #e0a020;
+      --dup-bg: #2a1e00;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-title .badge {
+      background: var(--gold);
+      color: #000;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 4px;
+    }
+    .header-title h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: var(--text);
+      line-height: 1;
+    }
+    .header-title span {
+      color: var(--gold);
+    }
+
+    /* ── PLAYER TOGGLE ── */
+    .player-bar {
+      display: flex;
+      gap: 8px;
+    }
+    .ptog {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1.5px solid var(--border);
+      background: var(--surface2);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .ptog:hover { border-color: #444; color: var(--text); }
+    .ptog.sel-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
+    .ptog.sel-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
+
+    /* ── MAIN ── */
+    main { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+
+    /* ── CARDS ── */
+    .profiles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+    }
+    .profile-card.active-r { border-color: var(--r-color); }
+    .profile-card.active-l { border-color: var(--l-color); }
+    .ph { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 18px;
+    }
+    .av-r { background: var(--r-bg); color: var(--r-color); border: 1.5px solid var(--r-color); }
+    .av-l { background: var(--l-bg); color: var(--l-color); border: 1.5px solid var(--l-color); }
+    .pname { font-size: 16px; font-weight: 600; }
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+    .stat { background: var(--surface2); border-radius: 8px; padding: 8px; text-align: center; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 24px; line-height: 1; }
+    .stat-num-r { color: var(--r-color); }
+    .stat-num-l { color: var(--l-color); }
+    .stat-label { font-size: 10px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .prog-wrap { margin-top: 10px; }
+    .prog-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .prog-bg { background: var(--surface2); border-radius: 99px; height: 5px; overflow: hidden; }
+    .prog-fill { height: 5px; border-radius: 99px; transition: width 0.5s ease; }
+    .fill-r { background: var(--r-color); }
+    .fill-l { background: var(--l-color); }
+
+    /* ── TABS ── */
+    .tabs-wrap { overflow-x: auto; margin-bottom: 1rem; padding-bottom: 4px; }
+    .tabs { display: flex; gap: 6px; width: max-content; }
+    .tab {
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .tab:hover { color: var(--text); border-color: #444; }
+    .tab.active-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
+    .tab.active-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
+
+    /* ── SEC INFO ── */
+    .sec-info {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* ── LEGENDA ── */
+    .legenda {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      font-size: 12px; color: var(--muted);
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .leg-item { display: flex; align-items: center; gap: 5px; }
+    .leg-box { width: 13px; height: 13px; border-radius: 3px; border: 1px solid #333; }
+    .leg-vazia { background: var(--surface2); }
+    .leg-r { background: var(--r-bg); border-color: var(--r-color); }
+    .leg-l { background: var(--l-bg); border-color: var(--l-color); }
+    .leg-dup { background: var(--dup-bg); border-color: var(--dup-color); }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+      gap: 5px;
+    }
+    .fig {
+      aspect-ratio: 3/4;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s, background 0.15s;
+    }
+    .fig:hover { transform: scale(1.07); }
+    .fig.sim-r { background: var(--r-bg); border-color: var(--r-color); color: var(--r-color); }
+    .fig.sim-l { background: var(--l-bg); border-color: var(--l-color); color: var(--l-color); }
+    .fig.dupla { background: var(--dup-bg); border-color: var(--dup-color); color: var(--dup-color); }
+
+    /* ── TROCA SECTION ── */
+    .troca-section {
+      margin-top: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .troca-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 1.5px;
+      margin-bottom: 1rem;
+      color: var(--gold);
+    }
+    .troca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .troca-col h4 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+    .troca-col.col-r h4 { color: var(--r-color); }
+    .troca-col.col-l h4 { color: var(--l-color); }
+    .troca-list { font-size: 12px; color: var(--muted); line-height: 1.8; word-break: break-all; }
+    .troca-empty { font-size: 12px; color: var(--muted); font-style: italic; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 540px) {
+      .profiles { grid-template-columns: 1fr; }
+      .troca-grid { grid-template-columns: 1fr; }
+      header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <div class="badge">PANINI · 980</div>
+    <h1>⚽ Copa <span>2026</span></h1>
+  </div>
+  <div class="player-bar">
+    <div class="ptog sel-r" id="tog-r" onclick="setPlayer('r')">📘 Rafael</div>
+    <div class="ptog" id="tog-l" onclick="setPlayer('l')">📗 Leonardo</div>
+  </div>
+</header>
+
+<main>
+  <!-- CARDS -->
+  <div class="profiles">
+    <div class="profile-card active-r" id="card-r">
+      <div class="ph">
+        <div class="avatar av-r">R</div>
+        <div class="pname">Rafael</div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-num stat-num-r" id="total-r">0</div><div class="stat-label">coladas</div></div>
+        <div class="stat"><div class="stat-num stat-num-r" id="falta-r">980</div><div class="stat-label">faltam</div></div>
+        <div class="stat"><div class="stat-num stat-num-r" id="dupla-r">0</div><div class="stat-label">repetidas</div></div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-label"><span id="pct-r">0%</span><span>980 figurinhas</span></div>
+        <div class="prog-bg"><div class="prog-fill fill-r" id="bar-r" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="profile-card" id="card-l">
+      <div class="ph">
+        <div class="avatar av-l">L</div>
+        <div class="pname">Leonardo</div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-num stat-num-l" id="total-l">0</div><div class="stat-label">coladas</div></div>
+        <div class="stat"><div class="stat-num stat-num-l" id="falta-l">980</div><div class="stat-label">faltam</div></div>
+        <div class="stat"><div class="stat-num stat-num-l" id="dupla-l">0</div><div class="stat-label">repetidas</div></div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-label"><span id="pct-l">0%</span><span>980 figurinhas</span></div>
+        <div class="prog-bg"><div class="prog-fill fill-l" id="bar-l" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
+  <div class="sec-info" id="sec-info"></div>
+
+  <!-- LEGENDA -->
+  <div class="legenda">
+    <div class="leg-item"><div class="leg-box leg-vazia"></div>vazia</div>
+    <div class="leg-item"><div class="leg-box leg-r"></div>Rafael</div>
+    <div class="leg-item"><div class="leg-box leg-l"></div>Leonardo</div>
+    <div class="leg-item"><div class="leg-box leg-dup"></div>repetida</div>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid" id="grid"></div>
+
+  <!-- TROCAS -->
+  <div class="troca-section">
+    <div class="troca-title">🔄 Trocas entre Irmãos</div>
+    <div class="troca-grid">
+      <div class="troca-col col-r">
+        <h4>Rafael pode dar ao Leonardo</h4>
+        <div id="troca-r" class="troca-empty">—</div>
+      </div>
+      <div class="troca-col col-l">
+        <h4>Leonardo pode dar ao Rafael</h4>
+        <div id="troca-l" class="troca-empty">—</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Copa do Mundo FIFA 2026™ · Álbum Panini Oficial · 980 figurinhas · Rafael & Leonardo
+</footer>
+
+<script>
+const TOTAL = 980;
+const secoes = [
+  { id: 'abertura',  nome: '🌍 Abertura',      de: 1,   ate: 18  },
+  { id: 'brasil',    nome: '🇧🇷 Brasil',        de: 19,  ate: 38  },
+  { id: 'argentina', nome: '🇦🇷 Argentina',     de: 39,  ate: 58  },
+  { id: 'franca',    nome: '🇫🇷 França',        de: 59,  ate: 78  },
+  { id: 'ingla',     nome: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra',  de: 79,  ate: 98  },
+  { id: 'alemanha',  nome: '🇩🇪 Alemanha',      de: 99,  ate: 118 },
+  { id: 'espanha',   nome: '🇪🇸 Espanha',       de: 119, ate: 138 },
+  { id: 'portugal',  nome: '🇵🇹 Portugal',      de: 139, ate: 158 },
+  { id: 'eua',       nome: '🇺🇸 EUA',           de: 159, ate: 178 },
+  { id: 'mexico',    nome: '🇲🇽 México',        de: 179, ate: 198 },
+  { id: 'canada',    nome: '🇨🇦 Canadá',        de: 199, ate: 218 },
+  { id: 'uruguai',   nome: '🇺🇾 Uruguai',       de: 219, ate: 238 },
+  { id: 'colombia',  nome: '🇨🇴 Colômbia',      de: 239, ate: 258 },
+  { id: 'marrocos',  nome: '🇲🇦 Marrocos',      de: 259, ate: 278 },
+  { id: 'japao',     nome: '🇯🇵 Japão',         de: 279, ate: 298 },
+  { id: 'grpAD',     nome: '📋 Grupos A–D',     de: 299, ate: 458 },
+  { id: 'grpEH',     nome: '📋 Grupos E–H',     de: 459, ate: 618 },
+  { id: 'grpIL',     nome: '📋 Grupos I–L',     de: 619, ate: 778 },
+  { id: 'estadios',  nome: '🏟️ Estádios',       de: 779, ate: 868 },
+  { id: 'especiais', nome: '✦ Especiais',       de: 869, ate: 912 },
+  { id: 'lendas',    nome: '🏆 Lendas',         de: 913, ate: 980 },
+];
+
+let currentPlayer = 'r';
+let currentSec = 'abertura';
+let state = {};
+
+try { state = JSON.parse(localStorage.getItem('copa2026_rl') || '{}'); } catch(e) {}
+
+function save() { try { localStorage.setItem('copa2026_rl', JSON.stringify(state)); } catch(e) {} }
+function key(n, p) { return `${p}_${n}`; }
+
+function ciclar(n) {
+  const k = key(n, currentPlayer);
+  const cur = state[k] || 'nao';
+  state[k] = cur === 'nao' ? 'sim' : cur === 'sim' ? 'dupla' : 'nao';
+  save();
+  renderGrid();
+  renderStats();
+  renderTrocas();
+}
+
+function renderTabs() {
+  const c = document.getElementById('tabs');
+  c.innerHTML = '';
+  secoes.forEach(s => {
+    const d = document.createElement('div');
+    d.className = 'tab' + (s.id === currentSec ? ` active-${currentPlayer}` : '');
+    d.textContent = s.nome;
+    d.onclick = () => { currentSec = s.id; renderTabs(); renderGrid(); };
+    c.appendChild(d);
+  });
+}
+
+function renderGrid() {
+  const sec = secoes.find(s => s.id === currentSec);
+  const g = document.getElementById('grid');
+  document.getElementById('sec-info').textContent =
+    `Figurinhas ${sec.de}–${sec.ate} · ${sec.ate - sec.de + 1} cromos`;
+  g.innerHTML = '';
+  for (let i = sec.de; i <= sec.ate; i++) {
+    const v = state[key(i, currentPlayer)] || 'nao';
+    const d = document.createElement('div');
+    d.className = 'fig' + (v === 'sim' ? ` sim-${currentPlayer}` : v === 'dupla' ? ' dupla' : '');
+    d.textContent = i;
+    d.title = v === 'sim' ? 'Colada — clique p/ repetida' : v === 'dupla' ? 'Repetida — clique p/ remover' : 'Vazia';
+    d.onclick = () => ciclar(i);
+    g.appendChild(d);
+  }
+}
+
+function renderStats() {
+  ['r','l'].forEach(p => {
+    let col = 0, dup = 0;
+    for (let i = 1; i <= TOTAL; i++) {
+      const v = state[key(i, p)] || 'nao';
+      if (v === 'sim') col++;
+      else if (v === 'dupla') dup++;
+    }
+    const falta = TOTAL - col;
+    const pct = Math.round(col / TOTAL * 100);
+    document.getElementById(`total-${p}`).textContent = col;
+    document.getElementById(`falta-${p}`).textContent = falta;
+    document.getElementById(`dupla-${p}`).textContent = dup;
+    document.getElementById(`pct-${p}`).textContent = pct + '%';
+    document.getElementById(`bar-${p}`).style.width = pct + '%';
+  });
+  // highlight active card
+  document.getElementById('card-r').className = 'profile-card' + (currentPlayer === 'r' ? ' active-r' : '');
+  document.getElementById('card-l').className = 'profile-card' + (currentPlayer === 'l' ? ' active-l' : '');
+}
+
+function renderTrocas() {
+  // Rafael pode dar ao Leonardo: Rafael tem dupla E Leonardo não tem
+  const rParaL = [], lParaR = [];
+  for (let i = 1; i <= TOTAL; i++) {
+    const r = state[key(i,'r')] || 'nao';
+    const l = state[key(i,'l')] || 'nao';
+    if (r === 'dupla' && l === 'nao') rParaL.push(i);
+    if (l === 'dupla' && r === 'nao') lParaR.push(i);
+  }
+  const elR = document.getElementById('troca-r');
+  const elL = document.getElementById('troca-l');
+  elR.className = rParaL.length ? 'troca-list' : 'troca-empty';
+  elL.className = lParaR.length ? 'troca-list' : 'troca-empty';
+  elR.textContent = rParaL.length ? rParaL.join(', ') : 'Nenhuma repetida ainda';
+  elL.textContent = lParaR.length ? lParaR.join(', ') : 'Nenhuma repetida ainda';
+}
+
+function setPlayer(p) {
+  currentPlayer = p;
+  document.getElementById('tog-r').className = 'ptog' + (p==='r'?' sel-r':'');
+  document.getElementById('tog-l').className = 'ptog' + (p==='l'?' sel-l':'');
+  renderTabs();
+  renderGrid();
+  renderStats();
+}
+
+renderTabs();
+renderGrid();
+renderStats();
+renderTrocas();
+</script>
+</body>
+</html>
