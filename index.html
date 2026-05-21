@@ -8,28 +8,19 @@
   <style>
     :root {
       --gold: #f5c518;
-      --bg: #0d0d0d;
-      --surface: #161616;
-      --surface2: #1f1f1f;
-      --border: #2a2a2a;
-      --text: #f0f0f0;
-      --muted: #888;
-      --r-color: #378ADD;
-      --r-bg: #0d2340;
-      --l-color: #1D9E75;
-      --l-bg: #08271e;
-      --dup-color: #e0a020;
-      --dup-bg: #2a1e00;
+      --bg: #0d0d0d; --surface: #161616; --surface2: #1f1f1f;
+      --border: #2a2a2a; --text: #f0f0f0; --muted: #888;
+      --r-color: #378ADD; --r-bg: #0d2340;
+      --l-color: #1D9E75; --l-bg: #08271e;
+      --dup-color: #e0a020; --dup-bg: #2a1e00;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
     header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 1.5rem;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem; flex-wrap: wrap;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem; display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
       position: sticky; top: 0; z-index: 100;
     }
     .header-title { display: flex; align-items: center; gap: 12px; }
@@ -65,22 +56,33 @@
     .fill-r { background: var(--r-color); }
     .fill-l { background: var(--l-color); }
 
-    /* TABS */
-    .tabs-wrap { overflow-x: auto; scrollbar-width: none; margin-bottom: 1rem; }
-    .tabs-wrap::-webkit-scrollbar { display: none; }
-    .tabs { display: flex; gap: 6px; width: max-content; padding-bottom: 4px; }
-    .tab {
-      padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+    /* GRUPO PILLS */
+    .grupos-wrap { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    .grp-pill {
+      padding: 6px 16px; border-radius: 99px; font-size: 13px; font-weight: 700;
+      border: 1.5px solid var(--border); background: var(--surface); color: var(--muted);
+      cursor: pointer; letter-spacing: 0.5px; transition: all 0.15s;
+    }
+    .grp-pill:hover { color: var(--text); border-color: #555; }
+    .grp-pill.active-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
+    .grp-pill.active-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
+
+    /* TIMES DO GRUPO */
+    .times-wrap { overflow-x: auto; scrollbar-width: none; margin-bottom: 1rem; }
+    .times-wrap::-webkit-scrollbar { display: none; }
+    .times-row { display: flex; gap: 6px; width: max-content; padding-bottom: 4px; }
+    .time-tab {
+      padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 500;
       border: 1px solid var(--border); background: var(--surface); color: var(--muted);
       cursor: pointer; white-space: nowrap; transition: all 0.15s;
-      display: flex; flex-direction: column; align-items: center; gap: 1px;
+      display: flex; align-items: center; gap: 7px;
     }
-    .tab:hover { color: var(--text); border-color: #444; }
-    .tab.active-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
-    .tab.active-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
-    .tab .flag { font-size: 18px; line-height: 1; }
-    .tab .tname { font-size: 10px; }
-    .tab .grp-badge { font-size: 9px; opacity: 0.55; }
+    .time-tab:hover { color: var(--text); border-color: #444; }
+    .time-tab.active-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
+    .time-tab.active-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
+    .time-tab .t-flag { font-size: 20px; }
+    .time-tab .t-name { font-size: 12px; font-weight: 600; }
+    .time-tab .t-prog { font-size: 10px; opacity: 0.6; }
 
     .sec-info { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
 
@@ -92,27 +94,24 @@
     .leg-l { background: var(--l-bg); border-color: var(--l-color); }
     .leg-dup { background: var(--dup-bg); border-color: var(--dup-color); }
 
-    /* GRID DE FIGURINHAS */
-    .fig-labels { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 6px; margin-bottom: 4px; }
-    .fig-label { font-size: 10px; color: var(--muted); text-align: center; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 6px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); gap: 6px; }
     .fig {
       aspect-ratio: 3/4; border-radius: 8px; border: 1px solid var(--border);
       background: var(--surface2); display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 2px;
-      font-size: 10px; font-weight: 600; color: var(--muted);
-      cursor: pointer; user-select: none; transition: transform 0.1s;
-      padding: 4px;
+      cursor: pointer; user-select: none; transition: transform 0.1s; padding: 4px;
     }
     .fig:hover { transform: scale(1.05); }
-    .fig .fig-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; line-height: 1; }
-    .fig .fig-tipo { font-size: 9px; opacity: 0.7; text-align: center; }
-    .fig.sim-r { background: var(--r-bg); border-color: var(--r-color); color: var(--r-color); }
-    .fig.sim-l { background: var(--l-bg); border-color: var(--l-color); color: var(--l-color); }
-    .fig.dupla { background: var(--dup-bg); border-color: var(--dup-color); color: var(--dup-color); }
+    .fig .fig-cod { font-family: 'Bebas Neue', sans-serif; font-size: 15px; line-height: 1; color: var(--muted); }
+    .fig .fig-tipo { font-size: 9px; color: var(--muted); text-align: center; opacity: 0.7; }
+    .fig.sim-r { background: var(--r-bg); border-color: var(--r-color); }
+    .fig.sim-r .fig-cod, .fig.sim-r .fig-tipo { color: var(--r-color); }
+    .fig.sim-l { background: var(--l-bg); border-color: var(--l-color); }
+    .fig.sim-l .fig-cod, .fig.sim-l .fig-tipo { color: var(--l-color); }
+    .fig.dupla { background: var(--dup-bg); border-color: var(--dup-color); }
+    .fig.dupla .fig-cod, .fig.dupla .fig-tipo { color: var(--dup-color); }
 
-    /* SEÇÕES ESPECIAIS (abertura, estádios, etc) */
-    .grid-especial { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 5px; }
+    .grid-esp { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 5px; }
     .fig-esp {
       aspect-ratio: 3/4; border-radius: 6px; border: 1px solid var(--border);
       background: var(--surface2); display: flex; align-items: center; justify-content: center;
@@ -183,7 +182,12 @@
     </div>
   </div>
 
-  <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
+  <!-- GRUPOS -->
+  <div class="grupos-wrap" id="grupos"></div>
+
+  <!-- TIMES DO GRUPO -->
+  <div class="times-wrap"><div class="times-row" id="times-row"></div></div>
+
   <div class="sec-info" id="sec-info"></div>
 
   <div class="legenda">
@@ -207,85 +211,84 @@
 <footer>Copa do Mundo FIFA 2026™ · Álbum Panini Oficial · 980 figurinhas · Rafael & Leonardo</footer>
 
 <script>
-// Seções especiais (numeração sequencial própria)
 const ESPECIAIS = [
-  { id: 'abertura',   flag: '🌍', nome: 'Abertura',    grp: '★', total: 18,  tipo: 'esp' },
-  { id: 'estadios',   flag: '🏟️', nome: 'Estádios',    grp: '★', total: 46,  tipo: 'esp' },
-  { id: 'especiais',  flag: '✦',  nome: 'Especiais',   grp: '★', total: 32,  tipo: 'esp' },
-  { id: 'lendas',     flag: '🏆', nome: 'Lendas',      grp: '★', total: 20,  tipo: 'esp' },
+  { id: 'abertura',  flag: '🌍', nome: 'Abertura',   grp: '★', total: 18, tipo: 'esp' },
+  { id: 'estadios',  flag: '🏟️', nome: 'Estádios',   grp: '★', total: 46, tipo: 'esp' },
+  { id: 'especiais', flag: '✦',  nome: 'Especiais',  grp: '★', total: 32, tipo: 'esp' },
+  { id: 'lendas',    flag: '🏆', nome: 'Lendas',     grp: '★', total: 20, tipo: 'esp' },
 ];
-
-// 48 seleções — cada uma com 20 figurinhas (1 escudo + 1 equipe + 18 jogadores)
-// Numeração própria 1–20 por seleção
 const TIMES = [
-  { id: 'mex', flag: '🇲🇽', nome: 'México',          grp: 'A' },
-  { id: 'rsa', flag: '🇿🇦', nome: 'África do Sul',   grp: 'A' },
-  { id: 'kor', flag: '🇰🇷', nome: 'Coreia do Sul',   grp: 'A' },
-  { id: 'cze', flag: '🇨🇿', nome: 'Rep. Tcheca',     grp: 'A' },
-  { id: 'can', flag: '🇨🇦', nome: 'Canadá',          grp: 'B' },
-  { id: 'bih', flag: '🇧🇦', nome: 'Bósnia',          grp: 'B' },
-  { id: 'qat', flag: '🇶🇦', nome: 'Catar',           grp: 'B' },
-  { id: 'sui', flag: '🇨🇭', nome: 'Suíça',           grp: 'B' },
-  { id: 'bra', flag: '🇧🇷', nome: 'Brasil',          grp: 'C' },
-  { id: 'mar', flag: '🇲🇦', nome: 'Marrocos',        grp: 'C' },
-  { id: 'hai', flag: '🇭🇹', nome: 'Haiti',           grp: 'C' },
-  { id: 'sco', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', nome: 'Escócia',         grp: 'C' },
-  { id: 'usa', flag: '🇺🇸', nome: 'EUA',             grp: 'D' },
-  { id: 'par', flag: '🇵🇾', nome: 'Paraguai',        grp: 'D' },
-  { id: 'aus', flag: '🇦🇺', nome: 'Austrália',       grp: 'D' },
-  { id: 'tur', flag: '🇹🇷', nome: 'Turquia',         grp: 'D' },
-  { id: 'ger', flag: '🇩🇪', nome: 'Alemanha',        grp: 'E' },
-  { id: 'cur', flag: '🇨🇼', nome: 'Curaçao',         grp: 'E' },
-  { id: 'civ', flag: '🇨🇮', nome: 'C. do Marfim',   grp: 'E' },
-  { id: 'ecu', flag: '🇪🇨', nome: 'Equador',         grp: 'E' },
-  { id: 'ned', flag: '🇳🇱', nome: 'Holanda',         grp: 'F' },
-  { id: 'jpn', flag: '🇯🇵', nome: 'Japão',           grp: 'F' },
-  { id: 'swe', flag: '🇸🇪', nome: 'Suécia',          grp: 'F' },
-  { id: 'tun', flag: '🇹🇳', nome: 'Tunísia',         grp: 'F' },
-  { id: 'bel', flag: '🇧🇪', nome: 'Bélgica',         grp: 'G' },
-  { id: 'egy', flag: '🇪🇬', nome: 'Egito',           grp: 'G' },
-  { id: 'irn', flag: '🇮🇷', nome: 'Irã',             grp: 'G' },
-  { id: 'nzl', flag: '🇳🇿', nome: 'Nova Zelândia',   grp: 'G' },
-  { id: 'esp', flag: '🇪🇸', nome: 'Espanha',         grp: 'H' },
-  { id: 'cpv', flag: '🇨🇻', nome: 'Cabo Verde',      grp: 'H' },
-  { id: 'ksa', flag: '🇸🇦', nome: 'Arábia Saudita',  grp: 'H' },
-  { id: 'uru', flag: '🇺🇾', nome: 'Uruguai',         grp: 'H' },
-  { id: 'fra', flag: '🇫🇷', nome: 'França',          grp: 'I' },
-  { id: 'sen', flag: '🇸🇳', nome: 'Senegal',         grp: 'I' },
-  { id: 'irq', flag: '🇮🇶', nome: 'Iraque',          grp: 'I' },
-  { id: 'nor', flag: '🇳🇴', nome: 'Noruega',         grp: 'I' },
-  { id: 'arg', flag: '🇦🇷', nome: 'Argentina',       grp: 'J' },
-  { id: 'bol', flag: '🇧🇴', nome: 'Bolívia',         grp: 'J' },
-  { id: 'isl', flag: '🇮🇸', nome: 'Islândia',        grp: 'J' },
-  { id: 'nig', flag: '🇳🇬', nome: 'Nigéria',         grp: 'J' },
-  { id: 'por', flag: '🇵🇹', nome: 'Portugal',        grp: 'K' },
-  { id: 'ang', flag: '🇦🇴', nome: 'Angola',          grp: 'K' },
-  { id: 'ven', flag: '🇻🇪', nome: 'Venezuela',       grp: 'K' },
-  { id: 'ukr', flag: '🇺🇦', nome: 'Ucrânia',         grp: 'K' },
-  { id: 'eng', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', nome: 'Inglaterra',      grp: 'L' },
-  { id: 'col', flag: '🇨🇴', nome: 'Colômbia',        grp: 'L' },
-  { id: 'pan', flag: '🇵🇦', nome: 'Panamá',          grp: 'L' },
-  { id: 'chi', flag: '🇨🇱', nome: 'Chile',           grp: 'L' },
+  { id:'mex', flag:'🇲🇽', nome:'México',         grp:'A' },
+  { id:'rsa', flag:'🇿🇦', nome:'África do Sul',  grp:'A' },
+  { id:'kor', flag:'🇰🇷', nome:'Coreia do Sul',  grp:'A' },
+  { id:'cze', flag:'🇨🇿', nome:'Rep. Tcheca',    grp:'A' },
+  { id:'can', flag:'🇨🇦', nome:'Canadá',         grp:'B' },
+  { id:'bih', flag:'🇧🇦', nome:'Bósnia',         grp:'B' },
+  { id:'qat', flag:'🇶🇦', nome:'Catar',          grp:'B' },
+  { id:'sui', flag:'🇨🇭', nome:'Suíça',          grp:'B' },
+  { id:'bra', flag:'🇧🇷', nome:'Brasil',         grp:'C' },
+  { id:'mar', flag:'🇲🇦', nome:'Marrocos',       grp:'C' },
+  { id:'hai', flag:'🇭🇹', nome:'Haiti',          grp:'C' },
+  { id:'sco', flag:'🏴󠁧󠁢󠁳󠁣󠁴󠁿', nome:'Escócia',        grp:'C' },
+  { id:'usa', flag:'🇺🇸', nome:'EUA',            grp:'D' },
+  { id:'par', flag:'🇵🇾', nome:'Paraguai',       grp:'D' },
+  { id:'aus', flag:'🇦🇺', nome:'Austrália',      grp:'D' },
+  { id:'tur', flag:'🇹🇷', nome:'Turquia',        grp:'D' },
+  { id:'ger', flag:'🇩🇪', nome:'Alemanha',       grp:'E' },
+  { id:'cur', flag:'🇨🇼', nome:'Curaçao',        grp:'E' },
+  { id:'civ', flag:'🇨🇮', nome:'C. do Marfim',  grp:'E' },
+  { id:'ecu', flag:'🇪🇨', nome:'Equador',        grp:'E' },
+  { id:'ned', flag:'🇳🇱', nome:'Holanda',        grp:'F' },
+  { id:'jpn', flag:'🇯🇵', nome:'Japão',          grp:'F' },
+  { id:'swe', flag:'🇸🇪', nome:'Suécia',         grp:'F' },
+  { id:'tun', flag:'🇹🇳', nome:'Tunísia',        grp:'F' },
+  { id:'bel', flag:'🇧🇪', nome:'Bélgica',        grp:'G' },
+  { id:'egy', flag:'🇪🇬', nome:'Egito',          grp:'G' },
+  { id:'irn', flag:'🇮🇷', nome:'Irã',            grp:'G' },
+  { id:'nzl', flag:'🇳🇿', nome:'Nova Zelândia',  grp:'G' },
+  { id:'esp', flag:'🇪🇸', nome:'Espanha',        grp:'H' },
+  { id:'cpv', flag:'🇨🇻', nome:'Cabo Verde',     grp:'H' },
+  { id:'ksa', flag:'🇸🇦', nome:'Arábia Saudita', grp:'H' },
+  { id:'uru', flag:'🇺🇾', nome:'Uruguai',        grp:'H' },
+  { id:'fra', flag:'🇫🇷', nome:'França',         grp:'I' },
+  { id:'sen', flag:'🇸🇳', nome:'Senegal',        grp:'I' },
+  { id:'irq', flag:'🇮🇶', nome:'Iraque',         grp:'I' },
+  { id:'nor', flag:'🇳🇴', nome:'Noruega',        grp:'I' },
+  { id:'arg', flag:'🇦🇷', nome:'Argentina',      grp:'J' },
+  { id:'bol', flag:'🇧🇴', nome:'Bolívia',        grp:'J' },
+  { id:'isl', flag:'🇮🇸', nome:'Islândia',       grp:'J' },
+  { id:'nig', flag:'🇳🇬', nome:'Nigéria',        grp:'J' },
+  { id:'por', flag:'🇵🇹', nome:'Portugal',       grp:'K' },
+  { id:'ang', flag:'🇦🇴', nome:'Angola',         grp:'K' },
+  { id:'ven', flag:'🇻🇪', nome:'Venezuela',      grp:'K' },
+  { id:'ukr', flag:'🇺🇦', nome:'Ucrânia',        grp:'K' },
+  { id:'eng', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', nome:'Inglaterra',     grp:'L' },
+  { id:'col', flag:'🇨🇴', nome:'Colômbia',       grp:'L' },
+  { id:'pan', flag:'🇵🇦', nome:'Panamá',         grp:'L' },
+  { id:'chi', flag:'🇨🇱', nome:'Chile',          grp:'L' },
 ].map(t => ({ ...t, total: 20, tipo: 'time' }));
 
 const SECOES = [...ESPECIAIS, ...TIMES];
-const TOTAL_GLOBAL = 980; // para barra de progresso
-
-// Tipos das figurinhas de cada time
-function getTipo(n) {
-  if (n === 1) return 'Escudo';
-  if (n === 2) return 'Equipe';
-  return `Jogador ${n-2}`;
-}
+const GRUPOS = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+const TOTAL_GLOBAL = 980;
 
 let currentPlayer = 'r';
+let currentGrp = 'C';
 let currentSec = 'bra';
 let state = {};
-try { state = JSON.parse(localStorage.getItem('copa2026_v5') || '{}'); } catch(e) {}
-
-function save() { try { localStorage.setItem('copa2026_v5', JSON.stringify(state)); } catch(e) {} }
-// key: secId + '_' + player + '_' + num
+try { state = JSON.parse(localStorage.getItem('copa2026_v6') || '{}'); } catch(e) {}
+function save() { try { localStorage.setItem('copa2026_v6', JSON.stringify(state)); } catch(e) {} }
 function key(secId, n, p) { return `${secId}_${p}_${n}`; }
+
+function getProgTime(secId, p) {
+  const sec = SECOES.find(s => s.id === secId);
+  if (!sec) return 0;
+  let col = 0;
+  for (let i = 1; i <= sec.total; i++) {
+    if ((state[key(secId, i, p)] || 'nao') === 'sim') col++;
+  }
+  return col;
+}
 
 function ciclar(secId, n) {
   const k = key(secId, n, currentPlayer);
@@ -295,64 +298,83 @@ function ciclar(secId, n) {
   renderGrid();
   renderStats();
   renderTrocas();
+  renderTimesRow(); // atualiza progresso na tab
 }
 
-function renderTabs() {
-  const c = document.getElementById('tabs');
+function renderGrupos() {
+  const c = document.getElementById('grupos');
   c.innerHTML = '';
-  SECOES.forEach(s => {
+  GRUPOS.forEach(g => {
     const d = document.createElement('div');
-    d.className = 'tab' + (s.id === currentSec ? ` active-${currentPlayer}` : '');
-    d.innerHTML = `<span class="flag">${s.flag}</span><span class="tname">${s.nome}</span><span class="grp-badge">${s.grp !== '★' ? 'Gr. '+s.grp : '★'}</span>`;
+    d.className = 'grp-pill' + (g === currentGrp ? ` active-${currentPlayer}` : '');
+    d.textContent = g === '★' ? '★ Especiais' : 'Grupo ' + g;
+    d.onclick = () => {
+      currentGrp = g;
+      const first = SECOES.find(s => s.grp === g);
+      if (first) currentSec = first.id;
+      renderGrupos();
+      renderTimesRow();
+      renderGrid();
+    };
+    c.appendChild(d);
+  });
+}
+
+function renderTimesRow() {
+  const c = document.getElementById('times-row');
+  c.innerHTML = '';
+  SECOES.filter(s => s.grp === currentGrp).forEach(s => {
+    const col = getProgTime(s.id, currentPlayer);
+    const d = document.createElement('div');
+    d.className = 'time-tab' + (s.id === currentSec ? ` active-${currentPlayer}` : '');
+    d.innerHTML = `<span class="t-flag">${s.flag}</span><span class="t-name">${s.nome}</span><span class="t-prog">${col}/${s.total}</span>`;
     d.onclick = () => {
       currentSec = s.id;
-      renderTabs();
+      renderTimesRow();
       renderGrid();
       d.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     };
     c.appendChild(d);
   });
-  setTimeout(() => {
-    const active = c.querySelector(`.active-${currentPlayer}`);
-    if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  }, 50);
+}
+
+function getTipo(n) {
+  if (n === 1) return 'Escudo';
+  if (n === 2) return 'Equipe';
+  return `Jogador ${n-2}`;
 }
 
 function renderGrid() {
   const sec = SECOES.find(s => s.id === currentSec);
   if (!sec) return;
   const container = document.getElementById('grid-container');
-
   document.getElementById('sec-info').textContent =
-    `${sec.flag} ${sec.nome} · ${sec.total} figurinhas${sec.tipo === 'time' ? ' · Grupo ' + sec.grp + ' · numeração ' + sec.id.toUpperCase() + '-1 a ' + sec.id.toUpperCase() + '-' + sec.total : ''}`;
+    sec.tipo === 'time'
+      ? `${sec.flag} ${sec.nome} · Grupo ${sec.grp} · ${sec.total} figurinhas (${sec.id.toUpperCase()}-1 a ${sec.id.toUpperCase()}-${sec.total})`
+      : `${sec.flag} ${sec.nome} · ${sec.total} figurinhas`;
+  container.innerHTML = '';
 
   if (sec.tipo === 'time') {
-    // Grid de times com tipos de figurinha
-    container.innerHTML = '';
     const g = document.createElement('div');
     g.className = 'grid';
     for (let i = 1; i <= sec.total; i++) {
       const v = state[key(sec.id, i, currentPlayer)] || 'nao';
       const d = document.createElement('div');
       d.className = 'fig' + (v === 'sim' ? ` sim-${currentPlayer}` : v === 'dupla' ? ' dupla' : '');
-      const tipo = getTipo(i);
-      d.innerHTML = `<span class="fig-num">${sec.id.toUpperCase()}-${i}</span><span class="fig-tipo">${tipo}</span>`;
-      d.title = `${sec.id.toUpperCase()}-${i} · ${tipo}`;
+      d.innerHTML = `<span class="fig-cod">${sec.id.toUpperCase()}-${i}</span><span class="fig-tipo">${getTipo(i)}</span>`;
+      d.title = `${sec.id.toUpperCase()}-${i} · ${getTipo(i)}`;
       d.onclick = () => ciclar(sec.id, i);
       g.appendChild(d);
     }
     container.appendChild(g);
   } else {
-    // Grid simples para especiais
-    container.innerHTML = '';
     const g = document.createElement('div');
-    g.className = 'grid-especial';
+    g.className = 'grid-esp';
     for (let i = 1; i <= sec.total; i++) {
       const v = state[key(sec.id, i, currentPlayer)] || 'nao';
       const d = document.createElement('div');
       d.className = 'fig-esp' + (v === 'sim' ? ` sim-${currentPlayer}` : v === 'dupla' ? ' dupla' : '');
       d.textContent = i;
-      d.title = `${sec.nome} nº ${i}`;
       d.onclick = () => ciclar(sec.id, i);
       g.appendChild(d);
     }
@@ -360,39 +382,35 @@ function renderGrid() {
   }
 }
 
-function countAll() {
-  let col = 0, dup = 0;
+function renderStats() {
   ['r','l'].forEach(p => {
-    let c = 0, d = 0;
+    let col = 0, dup = 0;
     SECOES.forEach(sec => {
       for (let i = 1; i <= sec.total; i++) {
         const v = state[key(sec.id, i, p)] || 'nao';
-        if (v === 'sim') c++;
-        else if (v === 'dupla') d++;
+        if (v === 'sim') col++;
+        else if (v === 'dupla') dup++;
       }
     });
-    if (p === 'r') { col = c; dup = d; }
-    document.getElementById(`total-${p}`).textContent = c;
-    document.getElementById(`falta-${p}`).textContent = TOTAL_GLOBAL - c;
-    document.getElementById(`dupla-${p}`).textContent = d;
-    document.getElementById(`pct-${p}`).textContent = Math.round(c / TOTAL_GLOBAL * 100) + '%';
-    document.getElementById(`bar-${p}`).style.width = Math.round(c / TOTAL_GLOBAL * 100) + '%';
+    document.getElementById(`total-${p}`).textContent = col;
+    document.getElementById(`falta-${p}`).textContent = TOTAL_GLOBAL - col;
+    document.getElementById(`dupla-${p}`).textContent = dup;
+    document.getElementById(`pct-${p}`).textContent = Math.round(col/TOTAL_GLOBAL*100)+'%';
+    document.getElementById(`bar-${p}`).style.width = Math.round(col/TOTAL_GLOBAL*100)+'%';
   });
-  document.getElementById('card-r').className = 'profile-card' + (currentPlayer === 'r' ? ' active-r' : '');
-  document.getElementById('card-l').className = 'profile-card' + (currentPlayer === 'l' ? ' active-l' : '');
+  document.getElementById('card-r').className = 'profile-card' + (currentPlayer==='r'?' active-r':'');
+  document.getElementById('card-l').className = 'profile-card' + (currentPlayer==='l'?' active-l':'');
 }
-
-function renderStats() { countAll(); }
 
 function renderTrocas() {
   const rParaL = [], lParaR = [];
   SECOES.forEach(sec => {
     for (let i = 1; i <= sec.total; i++) {
-      const r = state[key(sec.id, i, 'r')] || 'nao';
-      const l = state[key(sec.id, i, 'l')] || 'nao';
-      const label = sec.tipo === 'time' ? `${sec.id.toUpperCase()}-${i}` : `${sec.nome.substring(0,3).toUpperCase()}-${i}`;
-      if (r === 'dupla' && l === 'nao') rParaL.push(label);
-      if (l === 'dupla' && r === 'nao') lParaR.push(label);
+      const r = state[key(sec.id,i,'r')]||'nao';
+      const l = state[key(sec.id,i,'l')]||'nao';
+      const label = sec.tipo==='time' ? `${sec.id.toUpperCase()}-${i}` : `${sec.nome.substring(0,3).toUpperCase()}-${i}`;
+      if (r==='dupla' && l==='nao') rParaL.push(label);
+      if (l==='dupla' && r==='nao') lParaR.push(label);
     }
   });
   const elR = document.getElementById('troca-r');
@@ -405,14 +423,16 @@ function renderTrocas() {
 
 function setPlayer(p) {
   currentPlayer = p;
-  document.getElementById('tog-r').className = 'ptog' + (p==='r'?' sel-r':'');
-  document.getElementById('tog-l').className = 'ptog' + (p==='l'?' sel-l':'');
-  renderTabs();
+  document.getElementById('tog-r').className = 'ptog'+(p==='r'?' sel-r':'');
+  document.getElementById('tog-l').className = 'ptog'+(p==='l'?' sel-l':'');
+  renderGrupos();
+  renderTimesRow();
   renderGrid();
   renderStats();
 }
 
-renderTabs();
+renderGrupos();
+renderTimesRow();
 renderGrid();
 renderStats();
 renderTrocas();
