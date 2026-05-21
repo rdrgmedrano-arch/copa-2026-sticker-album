@@ -7,9 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --green: #00c06b;
       --gold: #f5c518;
-      --blue: #1a6ef5;
       --bg: #0d0d0d;
       --surface: #161616;
       --surface2: #1f1f1f;
@@ -30,22 +28,16 @@
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       padding: 1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 100;
     }
     .header-title { display: flex; align-items: center; gap: 12px; }
     .badge { background: var(--gold); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 1px; padding: 3px 10px; border-radius: 4px; }
-    .header-title h1 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; color: var(--text); line-height: 1; }
-    .header-title span { color: var(--gold); }
+    .header-title h1 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; line-height: 1; }
+    .header-title h1 span { color: var(--gold); }
     .player-bar { display: flex; gap: 8px; }
     .ptog { padding: 7px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; border: 1.5px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; transition: all 0.2s; }
-    .ptog:hover { border-color: #444; color: var(--text); }
     .ptog.sel-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
     .ptog.sel-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
 
@@ -73,24 +65,26 @@
     .fill-r { background: var(--r-color); }
     .fill-l { background: var(--l-color); }
 
-    /* GROUP SELECTOR */
-    .group-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
-    .grp-btn { padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; letter-spacing: 0.5px; transition: all 0.15s; }
-    .grp-btn:hover { color: var(--text); border-color: #444; }
-    .grp-btn.active-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
-    .grp-btn.active-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
-
     /* TABS */
-    .tabs-wrap { overflow-x: auto; margin-bottom: 1rem; padding-bottom: 4px; }
-    .tabs { display: flex; gap: 6px; width: max-content; }
-    .tab { padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 500; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+    .tabs-wrap { overflow-x: auto; scrollbar-width: none; margin-bottom: 1rem; }
+    .tabs-wrap::-webkit-scrollbar { display: none; }
+    .tabs { display: flex; gap: 6px; width: max-content; padding-bottom: 4px; }
+    .tab {
+      padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+      border: 1px solid var(--border); background: var(--surface); color: var(--muted);
+      cursor: pointer; white-space: nowrap; transition: all 0.15s;
+      display: flex; flex-direction: column; align-items: center; gap: 1px;
+    }
     .tab:hover { color: var(--text); border-color: #444; }
     .tab.active-r { background: var(--r-bg); color: var(--r-color); border-color: var(--r-color); }
     .tab.active-l { background: var(--l-bg); color: var(--l-color); border-color: var(--l-color); }
+    .tab .flag { font-size: 18px; line-height: 1; }
+    .tab .tname { font-size: 10px; }
+    .tab .grp-badge { font-size: 9px; opacity: 0.55; }
 
     .sec-info { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
 
-    .legenda { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); align-items: center; margin-bottom: 10px; }
+    .legenda { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); align-items: center; margin-bottom: 12px; }
     .leg-item { display: flex; align-items: center; gap: 5px; }
     .leg-box { width: 13px; height: 13px; border-radius: 3px; border: 1px solid #333; }
     .leg-vazia { background: var(--surface2); }
@@ -98,12 +92,37 @@
     .leg-l { background: var(--l-bg); border-color: var(--l-color); }
     .leg-dup { background: var(--dup-bg); border-color: var(--dup-color); }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 5px; }
-    .fig { aspect-ratio: 3/4; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; user-select: none; transition: transform 0.1s, background 0.15s; }
-    .fig:hover { transform: scale(1.07); }
+    /* GRID DE FIGURINHAS */
+    .fig-labels { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 6px; margin-bottom: 4px; }
+    .fig-label { font-size: 10px; color: var(--muted); text-align: center; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 6px; }
+    .fig {
+      aspect-ratio: 3/4; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface2); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 2px;
+      font-size: 10px; font-weight: 600; color: var(--muted);
+      cursor: pointer; user-select: none; transition: transform 0.1s;
+      padding: 4px;
+    }
+    .fig:hover { transform: scale(1.05); }
+    .fig .fig-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; line-height: 1; }
+    .fig .fig-tipo { font-size: 9px; opacity: 0.7; text-align: center; }
     .fig.sim-r { background: var(--r-bg); border-color: var(--r-color); color: var(--r-color); }
     .fig.sim-l { background: var(--l-bg); border-color: var(--l-color); color: var(--l-color); }
     .fig.dupla { background: var(--dup-bg); border-color: var(--dup-color); color: var(--dup-color); }
+
+    /* SEÇÕES ESPECIAIS (abertura, estádios, etc) */
+    .grid-especial { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 5px; }
+    .fig-esp {
+      aspect-ratio: 3/4; border-radius: 6px; border: 1px solid var(--border);
+      background: var(--surface2); display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--muted);
+      cursor: pointer; user-select: none; transition: transform 0.1s;
+    }
+    .fig-esp:hover { transform: scale(1.06); }
+    .fig-esp.sim-r { background: var(--r-bg); border-color: var(--r-color); color: var(--r-color); }
+    .fig-esp.sim-l { background: var(--l-bg); border-color: var(--l-color); color: var(--l-color); }
+    .fig-esp.dupla { background: var(--dup-bg); border-color: var(--dup-color); color: var(--dup-color); }
 
     .troca-section { margin-top: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
     .troca-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; margin-bottom: 1rem; color: var(--gold); }
@@ -164,10 +183,6 @@
     </div>
   </div>
 
-  <!-- GROUP FILTER -->
-  <div class="group-bar" id="group-bar"></div>
-
-  <!-- TEAM TABS -->
   <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
   <div class="sec-info" id="sec-info"></div>
 
@@ -178,7 +193,7 @@
     <div class="leg-item"><div class="leg-box leg-dup"></div>repetida</div>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <div id="grid-container"></div>
 
   <div class="troca-section">
     <div class="troca-title">🔄 Trocas entre Irmãos</div>
@@ -192,96 +207,88 @@
 <footer>Copa do Mundo FIFA 2026™ · Álbum Panini Oficial · 980 figurinhas · Rafael & Leonardo</footer>
 
 <script>
-// ── ESTRUTURA DO ÁLBUM (ordem oficial Panini 2026) ──
-// Abertura + Estádios/Especiais/Lendas são seções fixas.
-// 48 seleções × 18 figurinhas = 864 + 116 especiais/abertura/estádios = 980
-
+// Seções especiais (numeração sequencial própria)
 const ESPECIAIS = [
-  { id: 'abertura',  group: '★', nome: '🌍 Abertura',       de: 1,   ate: 18  },
-];
-const TIMES = [
-  // Grupo A
-  { id: 'mex',  group: 'A', nome: '🇲🇽 México',             de: 19,  ate: 36  },
-  { id: 'rsa',  group: 'A', nome: '🇿🇦 África do Sul',      de: 37,  ate: 54  },
-  { id: 'kor',  group: 'A', nome: '🇰🇷 Coreia do Sul',      de: 55,  ate: 72  },
-  { id: 'cze',  group: 'A', nome: '🇨🇿 Rep. Tcheca',        de: 73,  ate: 90  },
-  // Grupo B
-  { id: 'can',  group: 'B', nome: '🇨🇦 Canadá',             de: 91,  ate: 108 },
-  { id: 'bih',  group: 'B', nome: '🇧🇦 Bósnia e Herz.',     de: 109, ate: 126 },
-  { id: 'qat',  group: 'B', nome: '🇶🇦 Catar',              de: 127, ate: 144 },
-  { id: 'sui',  group: 'B', nome: '🇨🇭 Suíça',              de: 145, ate: 162 },
-  // Grupo C
-  { id: 'bra',  group: 'C', nome: '🇧🇷 Brasil',             de: 163, ate: 180 },
-  { id: 'mar',  group: 'C', nome: '🇲🇦 Marrocos',           de: 181, ate: 198 },
-  { id: 'hai',  group: 'C', nome: '🇭🇹 Haiti',              de: 199, ate: 216 },
-  { id: 'sco',  group: 'C', nome: '🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escócia',           de: 217, ate: 234 },
-  // Grupo D
-  { id: 'usa',  group: 'D', nome: '🇺🇸 EUA',                de: 235, ate: 252 },
-  { id: 'par',  group: 'D', nome: '🇵🇾 Paraguai',           de: 253, ate: 270 },
-  { id: 'aus',  group: 'D', nome: '🇦🇺 Austrália',          de: 271, ate: 288 },
-  { id: 'tur',  group: 'D', nome: '🇹🇷 Turquia',            de: 289, ate: 306 },
-  // Grupo E
-  { id: 'ger',  group: 'E', nome: '🇩🇪 Alemanha',           de: 307, ate: 324 },
-  { id: 'cur',  group: 'E', nome: '🇨🇼 Curaçao',            de: 325, ate: 342 },
-  { id: 'civ',  group: 'E', nome: '🇨🇮 Costa do Marfim',   de: 343, ate: 360 },
-  { id: 'ecu',  group: 'E', nome: '🇪🇨 Equador',            de: 361, ate: 378 },
-  // Grupo F
-  { id: 'ned',  group: 'F', nome: '🇳🇱 Holanda',            de: 379, ate: 396 },
-  { id: 'jpn',  group: 'F', nome: '🇯🇵 Japão',              de: 397, ate: 414 },
-  { id: 'swe',  group: 'F', nome: '🇸🇪 Suécia',             de: 415, ate: 432 },
-  { id: 'tun',  group: 'F', nome: '🇹🇳 Tunísia',            de: 433, ate: 450 },
-  // Grupo G
-  { id: 'bel',  group: 'G', nome: '🇧🇪 Bélgica',            de: 451, ate: 468 },
-  { id: 'egy',  group: 'G', nome: '🇪🇬 Egito',              de: 469, ate: 486 },
-  { id: 'irn',  group: 'G', nome: '🇮🇷 Irã',                de: 487, ate: 504 },
-  { id: 'nzl',  group: 'G', nome: '🇳🇿 Nova Zelândia',      de: 505, ate: 522 },
-  // Grupo H
-  { id: 'esp',  group: 'H', nome: '🇪🇸 Espanha',            de: 523, ate: 540 },
-  { id: 'cpv',  group: 'H', nome: '🇨🇻 Cabo Verde',         de: 541, ate: 558 },
-  { id: 'ksa',  group: 'H', nome: '🇸🇦 Arábia Saudita',     de: 559, ate: 576 },
-  { id: 'uru',  group: 'H', nome: '🇺🇾 Uruguai',            de: 577, ate: 594 },
-  // Grupo I
-  { id: 'fra',  group: 'I', nome: '🇫🇷 França',             de: 595, ate: 612 },
-  { id: 'sen',  group: 'I', nome: '🇸🇳 Senegal',            de: 613, ate: 630 },
-  { id: 'irq',  group: 'I', nome: '🇮🇶 Iraque',             de: 631, ate: 648 },
-  { id: 'nor',  group: 'I', nome: '🇳🇴 Noruega',            de: 649, ate: 666 },
-  // Grupo J
-  { id: 'arg',  group: 'J', nome: '🇦🇷 Argentina',          de: 667, ate: 684 },
-  { id: 'bol',  group: 'J', nome: '🇧🇴 Bolívia',            de: 685, ate: 702 },
-  { id: 'isl',  group: 'J', nome: '🇮🇸 Islândia',           de: 703, ate: 720 },
-  { id: 'nig',  group: 'J', nome: '🇳🇬 Nigéria',            de: 721, ate: 738 },
-  // Grupo K
-  { id: 'por',  group: 'K', nome: '🇵🇹 Portugal',           de: 739, ate: 756 },
-  { id: 'ang',  group: 'K', nome: '🇦🇴 Angola',             de: 757, ate: 774 },
-  { id: 'ven',  group: 'K', nome: '🇻🇪 Venezuela',          de: 775, ate: 792 },
-  { id: 'ukr',  group: 'K', nome: '🇺🇦 Ucrânia',            de: 793, ate: 810 },
-  // Grupo L
-  { id: 'eng',  group: 'L', nome: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra',        de: 811, ate: 828 },
-  { id: 'col',  group: 'L', nome: '🇨🇴 Colômbia',           de: 829, ate: 846 },
-  { id: 'pan',  group: 'L', nome: '🇵🇦 Panamá',             de: 847, ate: 864 },
-  { id: 'chi',  group: 'L', nome: '🇨🇱 Chile',              de: 865, ate: 882 },
-];
-const FIXAS = [
-  { id: 'estadios', group: '★', nome: '🏟️ Estádios',        de: 883, ate: 928 },
-  { id: 'especiais',group: '★', nome: '✦ Especiais',         de: 929, ate: 960 },
-  { id: 'lendas',   group: '★', nome: '🏆 Lendas',           de: 961, ate: 980 },
+  { id: 'abertura',   flag: '🌍', nome: 'Abertura',    grp: '★', total: 18,  tipo: 'esp' },
+  { id: 'estadios',   flag: '🏟️', nome: 'Estádios',    grp: '★', total: 46,  tipo: 'esp' },
+  { id: 'especiais',  flag: '✦',  nome: 'Especiais',   grp: '★', total: 32,  tipo: 'esp' },
+  { id: 'lendas',     flag: '🏆', nome: 'Lendas',      grp: '★', total: 20,  tipo: 'esp' },
 ];
 
-const SECOES = [...ESPECIAIS, ...TIMES, ...FIXAS];
-const TOTAL = 980;
-const GRUPOS = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+// 48 seleções — cada uma com 20 figurinhas (1 escudo + 1 equipe + 18 jogadores)
+// Numeração própria 1–20 por seleção
+const TIMES = [
+  { id: 'mex', flag: '🇲🇽', nome: 'México',          grp: 'A' },
+  { id: 'rsa', flag: '🇿🇦', nome: 'África do Sul',   grp: 'A' },
+  { id: 'kor', flag: '🇰🇷', nome: 'Coreia do Sul',   grp: 'A' },
+  { id: 'cze', flag: '🇨🇿', nome: 'Rep. Tcheca',     grp: 'A' },
+  { id: 'can', flag: '🇨🇦', nome: 'Canadá',          grp: 'B' },
+  { id: 'bih', flag: '🇧🇦', nome: 'Bósnia',          grp: 'B' },
+  { id: 'qat', flag: '🇶🇦', nome: 'Catar',           grp: 'B' },
+  { id: 'sui', flag: '🇨🇭', nome: 'Suíça',           grp: 'B' },
+  { id: 'bra', flag: '🇧🇷', nome: 'Brasil',          grp: 'C' },
+  { id: 'mar', flag: '🇲🇦', nome: 'Marrocos',        grp: 'C' },
+  { id: 'hai', flag: '🇭🇹', nome: 'Haiti',           grp: 'C' },
+  { id: 'sco', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', nome: 'Escócia',         grp: 'C' },
+  { id: 'usa', flag: '🇺🇸', nome: 'EUA',             grp: 'D' },
+  { id: 'par', flag: '🇵🇾', nome: 'Paraguai',        grp: 'D' },
+  { id: 'aus', flag: '🇦🇺', nome: 'Austrália',       grp: 'D' },
+  { id: 'tur', flag: '🇹🇷', nome: 'Turquia',         grp: 'D' },
+  { id: 'ger', flag: '🇩🇪', nome: 'Alemanha',        grp: 'E' },
+  { id: 'cur', flag: '🇨🇼', nome: 'Curaçao',         grp: 'E' },
+  { id: 'civ', flag: '🇨🇮', nome: 'C. do Marfim',   grp: 'E' },
+  { id: 'ecu', flag: '🇪🇨', nome: 'Equador',         grp: 'E' },
+  { id: 'ned', flag: '🇳🇱', nome: 'Holanda',         grp: 'F' },
+  { id: 'jpn', flag: '🇯🇵', nome: 'Japão',           grp: 'F' },
+  { id: 'swe', flag: '🇸🇪', nome: 'Suécia',          grp: 'F' },
+  { id: 'tun', flag: '🇹🇳', nome: 'Tunísia',         grp: 'F' },
+  { id: 'bel', flag: '🇧🇪', nome: 'Bélgica',         grp: 'G' },
+  { id: 'egy', flag: '🇪🇬', nome: 'Egito',           grp: 'G' },
+  { id: 'irn', flag: '🇮🇷', nome: 'Irã',             grp: 'G' },
+  { id: 'nzl', flag: '🇳🇿', nome: 'Nova Zelândia',   grp: 'G' },
+  { id: 'esp', flag: '🇪🇸', nome: 'Espanha',         grp: 'H' },
+  { id: 'cpv', flag: '🇨🇻', nome: 'Cabo Verde',      grp: 'H' },
+  { id: 'ksa', flag: '🇸🇦', nome: 'Arábia Saudita',  grp: 'H' },
+  { id: 'uru', flag: '🇺🇾', nome: 'Uruguai',         grp: 'H' },
+  { id: 'fra', flag: '🇫🇷', nome: 'França',          grp: 'I' },
+  { id: 'sen', flag: '🇸🇳', nome: 'Senegal',         grp: 'I' },
+  { id: 'irq', flag: '🇮🇶', nome: 'Iraque',          grp: 'I' },
+  { id: 'nor', flag: '🇳🇴', nome: 'Noruega',         grp: 'I' },
+  { id: 'arg', flag: '🇦🇷', nome: 'Argentina',       grp: 'J' },
+  { id: 'bol', flag: '🇧🇴', nome: 'Bolívia',         grp: 'J' },
+  { id: 'isl', flag: '🇮🇸', nome: 'Islândia',        grp: 'J' },
+  { id: 'nig', flag: '🇳🇬', nome: 'Nigéria',         grp: 'J' },
+  { id: 'por', flag: '🇵🇹', nome: 'Portugal',        grp: 'K' },
+  { id: 'ang', flag: '🇦🇴', nome: 'Angola',          grp: 'K' },
+  { id: 'ven', flag: '🇻🇪', nome: 'Venezuela',       grp: 'K' },
+  { id: 'ukr', flag: '🇺🇦', nome: 'Ucrânia',         grp: 'K' },
+  { id: 'eng', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', nome: 'Inglaterra',      grp: 'L' },
+  { id: 'col', flag: '🇨🇴', nome: 'Colômbia',        grp: 'L' },
+  { id: 'pan', flag: '🇵🇦', nome: 'Panamá',          grp: 'L' },
+  { id: 'chi', flag: '🇨🇱', nome: 'Chile',           grp: 'L' },
+].map(t => ({ ...t, total: 20, tipo: 'time' }));
+
+const SECOES = [...ESPECIAIS, ...TIMES];
+const TOTAL_GLOBAL = 980; // para barra de progresso
+
+// Tipos das figurinhas de cada time
+function getTipo(n) {
+  if (n === 1) return 'Escudo';
+  if (n === 2) return 'Equipe';
+  return `Jogador ${n-2}`;
+}
 
 let currentPlayer = 'r';
-let currentGroup = 'C'; // começa no Brasil
 let currentSec = 'bra';
 let state = {};
-try { state = JSON.parse(localStorage.getItem('copa2026_v3') || '{}'); } catch(e) {}
+try { state = JSON.parse(localStorage.getItem('copa2026_v5') || '{}'); } catch(e) {}
 
-function save() { try { localStorage.setItem('copa2026_v3', JSON.stringify(state)); } catch(e) {} }
-function key(n, p) { return `${p}_${n}`; }
+function save() { try { localStorage.setItem('copa2026_v5', JSON.stringify(state)); } catch(e) {} }
+// key: secId + '_' + player + '_' + num
+function key(secId, n, p) { return `${secId}_${p}_${n}`; }
 
-function ciclar(n) {
-  const k = key(n, currentPlayer);
+function ciclar(secId, n) {
+  const k = key(secId, n, currentPlayer);
   const cur = state[k] || 'nao';
   state[k] = cur === 'nao' ? 'sim' : cur === 'sim' ? 'dupla' : 'nao';
   save();
@@ -290,83 +297,104 @@ function ciclar(n) {
   renderTrocas();
 }
 
-function renderGroups() {
-  const c = document.getElementById('group-bar');
-  c.innerHTML = '';
-  GRUPOS.forEach(g => {
-    const d = document.createElement('div');
-    d.className = 'grp-btn' + (g === currentGroup ? ` active-${currentPlayer}` : '');
-    d.textContent = g === '★' ? '★ Especiais' : 'Grupo ' + g;
-    d.onclick = () => {
-      currentGroup = g;
-      const first = SECOES.find(s => s.group === g);
-      if (first) currentSec = first.id;
-      renderGroups();
-      renderTabs();
-      renderGrid();
-    };
-    c.appendChild(d);
-  });
-}
-
 function renderTabs() {
   const c = document.getElementById('tabs');
   c.innerHTML = '';
-  SECOES.filter(s => s.group === currentGroup).forEach(s => {
+  SECOES.forEach(s => {
     const d = document.createElement('div');
     d.className = 'tab' + (s.id === currentSec ? ` active-${currentPlayer}` : '');
-    d.textContent = s.nome;
-    d.onclick = () => { currentSec = s.id; renderTabs(); renderGrid(); };
+    d.innerHTML = `<span class="flag">${s.flag}</span><span class="tname">${s.nome}</span><span class="grp-badge">${s.grp !== '★' ? 'Gr. '+s.grp : '★'}</span>`;
+    d.onclick = () => {
+      currentSec = s.id;
+      renderTabs();
+      renderGrid();
+      d.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    };
     c.appendChild(d);
   });
+  setTimeout(() => {
+    const active = c.querySelector(`.active-${currentPlayer}`);
+    if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }, 50);
 }
 
 function renderGrid() {
   const sec = SECOES.find(s => s.id === currentSec);
   if (!sec) return;
-  const g = document.getElementById('grid');
-  const count = sec.ate - sec.de + 1;
-  document.getElementById('sec-info').textContent = `${sec.nome} · figurinhas ${sec.de}–${sec.ate} · ${count} cromos`;
-  g.innerHTML = '';
-  for (let i = sec.de; i <= sec.ate; i++) {
-    const v = state[key(i, currentPlayer)] || 'nao';
-    const d = document.createElement('div');
-    d.className = 'fig' + (v === 'sim' ? ` sim-${currentPlayer}` : v === 'dupla' ? ' dupla' : '');
-    d.textContent = i;
-    d.title = v === 'sim' ? 'Colada — clique p/ repetida' : v === 'dupla' ? 'Repetida — clique p/ remover' : 'Vazia — clique p/ colar';
-    d.onclick = () => ciclar(i);
-    g.appendChild(d);
+  const container = document.getElementById('grid-container');
+
+  document.getElementById('sec-info').textContent =
+    `${sec.flag} ${sec.nome} · ${sec.total} figurinhas${sec.tipo === 'time' ? ' · Grupo ' + sec.grp + ' · numeração ' + sec.id.toUpperCase() + '-1 a ' + sec.id.toUpperCase() + '-' + sec.total : ''}`;
+
+  if (sec.tipo === 'time') {
+    // Grid de times com tipos de figurinha
+    container.innerHTML = '';
+    const g = document.createElement('div');
+    g.className = 'grid';
+    for (let i = 1; i <= sec.total; i++) {
+      const v = state[key(sec.id, i, currentPlayer)] || 'nao';
+      const d = document.createElement('div');
+      d.className = 'fig' + (v === 'sim' ? ` sim-${currentPlayer}` : v === 'dupla' ? ' dupla' : '');
+      const tipo = getTipo(i);
+      d.innerHTML = `<span class="fig-num">${sec.id.toUpperCase()}-${i}</span><span class="fig-tipo">${tipo}</span>`;
+      d.title = `${sec.id.toUpperCase()}-${i} · ${tipo}`;
+      d.onclick = () => ciclar(sec.id, i);
+      g.appendChild(d);
+    }
+    container.appendChild(g);
+  } else {
+    // Grid simples para especiais
+    container.innerHTML = '';
+    const g = document.createElement('div');
+    g.className = 'grid-especial';
+    for (let i = 1; i <= sec.total; i++) {
+      const v = state[key(sec.id, i, currentPlayer)] || 'nao';
+      const d = document.createElement('div');
+      d.className = 'fig-esp' + (v === 'sim' ? ` sim-${currentPlayer}` : v === 'dupla' ? ' dupla' : '');
+      d.textContent = i;
+      d.title = `${sec.nome} nº ${i}`;
+      d.onclick = () => ciclar(sec.id, i);
+      g.appendChild(d);
+    }
+    container.appendChild(g);
   }
 }
 
-function renderStats() {
+function countAll() {
+  let col = 0, dup = 0;
   ['r','l'].forEach(p => {
-    let col = 0, dup = 0;
-    for (let i = 1; i <= TOTAL; i++) {
-      const v = state[key(i, p)] || 'nao';
-      if (v === 'sim') col++;
-      else if (v === 'dupla') dup++;
-    }
-    const falta = TOTAL - col;
-    const pct = Math.round(col / TOTAL * 100);
-    document.getElementById(`total-${p}`).textContent = col;
-    document.getElementById(`falta-${p}`).textContent = falta;
-    document.getElementById(`dupla-${p}`).textContent = dup;
-    document.getElementById(`pct-${p}`).textContent = pct + '%';
-    document.getElementById(`bar-${p}`).style.width = pct + '%';
+    let c = 0, d = 0;
+    SECOES.forEach(sec => {
+      for (let i = 1; i <= sec.total; i++) {
+        const v = state[key(sec.id, i, p)] || 'nao';
+        if (v === 'sim') c++;
+        else if (v === 'dupla') d++;
+      }
+    });
+    if (p === 'r') { col = c; dup = d; }
+    document.getElementById(`total-${p}`).textContent = c;
+    document.getElementById(`falta-${p}`).textContent = TOTAL_GLOBAL - c;
+    document.getElementById(`dupla-${p}`).textContent = d;
+    document.getElementById(`pct-${p}`).textContent = Math.round(c / TOTAL_GLOBAL * 100) + '%';
+    document.getElementById(`bar-${p}`).style.width = Math.round(c / TOTAL_GLOBAL * 100) + '%';
   });
   document.getElementById('card-r').className = 'profile-card' + (currentPlayer === 'r' ? ' active-r' : '');
   document.getElementById('card-l').className = 'profile-card' + (currentPlayer === 'l' ? ' active-l' : '');
 }
 
+function renderStats() { countAll(); }
+
 function renderTrocas() {
   const rParaL = [], lParaR = [];
-  for (let i = 1; i <= TOTAL; i++) {
-    const r = state[key(i,'r')] || 'nao';
-    const l = state[key(i,'l')] || 'nao';
-    if (r === 'dupla' && l === 'nao') rParaL.push(i);
-    if (l === 'dupla' && r === 'nao') lParaR.push(i);
-  }
+  SECOES.forEach(sec => {
+    for (let i = 1; i <= sec.total; i++) {
+      const r = state[key(sec.id, i, 'r')] || 'nao';
+      const l = state[key(sec.id, i, 'l')] || 'nao';
+      const label = sec.tipo === 'time' ? `${sec.id.toUpperCase()}-${i}` : `${sec.nome.substring(0,3).toUpperCase()}-${i}`;
+      if (r === 'dupla' && l === 'nao') rParaL.push(label);
+      if (l === 'dupla' && r === 'nao') lParaR.push(label);
+    }
+  });
   const elR = document.getElementById('troca-r');
   const elL = document.getElementById('troca-l');
   elR.className = rParaL.length ? 'troca-list' : 'troca-empty';
@@ -379,13 +407,11 @@ function setPlayer(p) {
   currentPlayer = p;
   document.getElementById('tog-r').className = 'ptog' + (p==='r'?' sel-r':'');
   document.getElementById('tog-l').className = 'ptog' + (p==='l'?' sel-l':'');
-  renderGroups();
   renderTabs();
   renderGrid();
   renderStats();
 }
 
-renderGroups();
 renderTabs();
 renderGrid();
 renderStats();
