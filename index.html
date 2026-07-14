@@ -639,6 +639,13 @@
         <!-- Modo: comparar com lista colada -->
         <div id="compare-mode-paste" style="display:none">
           <div class="paste-section">
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
+              <label class="paste-label" style="margin:0">Comparar com:</label>
+              <select id="paste-person" class="compare-select" style="flex:1; min-width:150px;">
+                <option value="r">📘 Rafael</option>
+                <option value="l">📗 Leonardo</option>
+              </select>
+            </div>
             <label class="paste-label">Cole aqui a lista de figurinhas que faltam (uma por linha, ex: A1, B2, C3...)</label>
             <textarea id="paste-input" class="paste-input" placeholder="A1&#10;A2&#10;B3&#10;B5&#10;etc..."></textarea>
             <div class="paste-btns">
@@ -895,6 +902,8 @@ window.comparePasteList = function() {
     return;
   }
 
+  const pastePerson = document.getElementById('paste-person').value;
+
   // Parse: linha por linha, remove espaços em branco
   const linhas = input.split('\n').map(l => l.trim().toUpperCase()).filter(l => l);
   const faltantes = [];
@@ -917,23 +926,23 @@ window.comparePasteList = function() {
 
   if (!faltantes.length) return;
 
-  // Cruza com repetidas do currentPlayer
+  // Cruza com repetidas da pessoa selecionada
   const uteis = [];
   faltantes.forEach(lbl => {
     const { secId, i } = labelMap[lbl];
-    const minhaDupla = state[key(secId, i, currentPlayer)] || 'nao';
+    const minhaDupla = state[key(secId, i, pastePerson)] || 'nao';
     if (minhaDupla === 'dupla') {
       const sec = SECOES.find(s => s.id === secId);
       uteis.push({ sec, i, lbl });
     }
   });
 
-  renderPasteResult(faltantes, uteis, invalidas);
+  renderPasteResult(faltantes, uteis, invalidas, pastePerson);
 };
 
-function renderPasteResult(faltantes, uteis, invalidas) {
+function renderPasteResult(faltantes, uteis, invalidas, person) {
   const container = document.getElementById('paste-result');
-  const name = personName(currentPlayer);
+  const name = personName(person);
 
   container.innerHTML = '';
 
@@ -1314,6 +1323,30 @@ window.setCompareMode = function(mode) {
   document.getElementById('compare-mode-2p').style.display = mode==='2p' ? '' : 'none';
   document.getElementById('compare-mode-vs').style.display = mode==='vs' ? '' : 'none';
   document.getElementById('compare-mode-paste').style.display = mode==='paste' ? '' : 'none';
+  if (mode === 'paste') {
+    updatePastePeoplePicker();
+  }
+};
+
+function updatePastePeoplePicker() {
+  const sel = document.getElementById('paste-person');
+  if (!sel) return;
+  const currentValue = sel.value;
+  sel.innerHTML = '';
+  
+  const options = [
+    { id: 'r', label: '📘 Rafael' },
+    { id: 'l', label: '📗 Leonardo' },
+    ...friends.map(f => ({ id: f.id, label: '🔴 ' + f.name }))
+  ];
+  
+  options.forEach(opt => {
+    const o = document.createElement('option');
+    o.value = opt.id;
+    o.textContent = opt.label;
+    if (opt.id === currentValue) o.selected = true;
+    sel.appendChild(o);
+  });
 };
 
 // ── SIDEBAR ──
