@@ -611,7 +611,11 @@
               </select>
             </div>
             <label class="paste-label">Cole aqui a lista de figurinhas que faltam (uma por linha, ex: A1, B2, C3...)</label>
-            <textarea id="paste-input" class="paste-input" placeholder="A1&#10;A2&#10;B3&#10;B5&#10;etc..."></textarea>
+            <textarea id="paste-input" class="paste-input" placeholder="A1
+A2
+B3
+B5
+etc..."></textarea>
             <div class="paste-btns">
               <button class="btn-paste btn-paste-compare" onclick="comparePasteList()">🔍 Comparar</button>
               <button class="btn-paste btn-paste-clear" onclick="clearPasteInput()">✕ Limpar</button>
@@ -720,6 +724,15 @@ const TIMES = [
 const SECOES = [...ESPECIAIS, ...TIMES];
 const GRUPOS  = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
 const TOTAL_GLOBAL = 993;
+
+// Mapa inverso: "A1" → {secId:"mex", i:1}
+const labelMap = {};
+SECOES.forEach(sec => {
+  for (let i=1; i<=sec.total; i++) {
+    const lbl = sec.tipo === 'esp' ? (sec.prefixo + (sec.offset + i)) : (sec.id.toUpperCase() + i);
+    labelMap[lbl] = { secId:sec.id, i };
+  }
+});
 
 let currentPlayer = 'r';
 let currentGrp    = 'todos'; // 'todos' ou letra do grupo
