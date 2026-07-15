@@ -976,7 +976,7 @@ function getLabel(sec, i) {
     return sec.prefixo + (sec.offset + i);
   }
   if (sec.tipo === 'time') {
-    return sec.id.toUpperCase() + '-' + i;
+    return sec.id.toUpperCase() + i;
   }
   return sec.nome + ' ' + i;
 }
