@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⚽ Álbum Copa 2026 — Rafael & Leonardo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --verde:      #009c3b;
+      --amarelo:    #ffdf00;
+      --azul:       #002776;
+      --bg:         #f0f4f8;
+      --surface:    #ffffff;
+      --surface2:   #eef2f7;
+      --border:     #d0dae8;
+      --text:       #1a2535;
+      --muted:      #6b7c94;
+      --r-color:    #002776;
+      --r-bg:       #dce8f5;
+      --l-color:    #009c3b;
+      --l-bg:       #d8f5e4;
+      --a-color:    #8b1a1a;
+      --a-bg:       #fde8e8;
+      --dup-color:  #b07d00;
+      --dup-bg:     #fff8cc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--azul);
+      border-bottom: 4px solid var(--amarelo);
+      padding: 0.75rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .badge { background: var(--amarelo); color: var(--azul); font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 1px; padding: 2px 8px; border-radius: 4px; }
+    header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: #fff; line-height: 1; }
+    header h1 span { color: var(--amarelo); }
+    .sync-status { font-size: 11px; padding: 2px 9px; border-radius: 99px; font-weight: 600; }
+    .sync-ok     { background: #d8f5e4; color: #006828; border: 1px solid #009c3b; }
+    .sync-saving { background: #fff8cc; color: #7a5800; border: 1px solid #e0a020; }
+    .sync-off    { background: #fde8e8; color: #991b1b; border: 1px solid #e24b4a; }
+    .player-bar { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+    .ptog { padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; border: 1.5px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.65); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .ptog:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .ptog.sel-r { background: var(--azul); color: var(--amarelo); border-color: var(--amarelo); box-shadow: 0 0 0 2px var(--amarelo); }
+    .ptog.sel-l { background: var(--verde); color: #fff; border-color: #fff; }
+    .ptog.sel-friend { background: var(--a-color); color: #fff; border-color: #ffb3b3; }
+    .friend-chip-wrap { display: flex; align-items: center; gap: 3px; }
+    .friend-remove-x {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; cursor: pointer; border: none; flex-shrink: 0;
+    }
+    .friend-remove-x:hover { background: #fff; color: var(--a-color); }
+    .btn-add-friend {
+      padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700;
+      border: 1.5px dashed rgba(255,255,255,0.4); background: transparent;
+      color: rgba(255,255,255,0.7); cursor: pointer; transition: all 0.15s;
+    }
+    .btn-add-friend:hover { background: rgba(255,255,255,0.12); color: #fff; border-color: #fff; }
+
+    /* ── LAYOUT ── */
+    .page-wrap { display: flex; gap: 0; align-items: flex-start; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 200px; min-width: 180px; flex-shrink: 0;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      background: var(--surface); border-right: 2px solid var(--border);
+      padding: 8px 0;
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .sb-group-label {
+      font-family: 'Bebas Neue', sans-serif; font-size: 10px; letter-spacing: 2px;
+      color: var(--muted); padding: 7px 12px 3px;
+      border-top: 1px solid var(--border); margin-top: 3px; text-transform: uppercase;
+    }
+    .sb-group-label:first-child { border-top: none; margin-top: 0; }
+    .sb-item {
+      display: flex; align-items: center; gap: 7px;
+      padding: 5px 12px; cursor: pointer;
+      border-left: 3px solid transparent; transition: all 0.1s;
+    }
+    .sb-item:hover { background: var(--surface2); }
+    .sb-item.active-r { background: var(--r-bg); border-left-color: var(--azul); }
+    .sb-item.active-l { background: var(--l-bg); border-left-color: var(--verde); }
+    .sb-item.active-a { background: var(--a-bg); border-left-color: var(--a-color); }
+    .sb-flag { font-size: 16px; flex-shrink: 0; }
+    .sb-info { flex: 1; min-width: 0; }
+    .sb-nome { font-size: 11px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-sub  { font-size: 9px; color: var(--muted); margin-top: 1px; display: flex; gap: 5px; }
+    .sb-bar  { height: 2px; background: var(--surface2); border-radius: 2px; margin-top: 3px; overflow: hidden; }
+    .sb-bar-fill { height: 2px; border-radius: 2px; }
+    .sb-bar-r { background: var(--azul); }
+    .sb-bar-l { background: var(--verde); }
+    .sb-bar-a { background: var(--a-color); }
+
+    /* ── MAIN ── */
+    main { flex: 1; min-width: 0; padding: 1rem 1.25rem; }
+
+    /* ── CARDS DE PROGRESSO ── */
+    .profiles { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+    .pcard { background: var(--surface); border: 2px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; transition: border-color 0.2s; }
+    .pcard.active-r { border-color: var(--azul); box-shadow: 0 2px 10px rgba(0,39,118,0.1); }
+    .pcard.active-l { border-color: var(--verde); box-shadow: 0 2px 10px rgba(0,156,59,0.1); }
+    .pcard.active-a { border-color: var(--a-color); }
+    .pcard.amigo-card { border-style: dashed; }
+    .pc-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 16px; }
+    .av-r { background: var(--r-bg); color: var(--azul); border: 2px solid var(--azul); }
+    .av-l { background: var(--l-bg); color: var(--verde); border: 2px solid var(--verde); }
+    .av-a { background: var(--a-bg); color: var(--a-color); border: 2px solid var(--a-color); }
+    .pname { font-size: 14px; font-weight: 700; }
+    .amigo-hint { font-size: 10px; color: var(--muted); }
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }
+    .stat { background: var(--surface2); border-radius: 7px; padding: 6px; text-align: center; border: 1px solid var(--border); }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; line-height: 1; }
+    .sn-r { color: var(--azul); }
+    .sn-l { color: var(--verde); }
+    .sn-a { color: var(--a-color); }
+    .stat-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .prog-wrap { margin-top: 8px; }
+    .prog-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+    .prog-bg { background: var(--surface2); border-radius: 99px; height: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .prog-fill { height: 5px; border-radius: 99px; transition: width 0.5s; }
+    .fill-r { background: var(--azul); }
+    .fill-l { background: var(--verde); }
+    .fill-a { background: var(--a-color); }
+
+    /* ── NAVEGAÇÃO GRUPOS ── */
+    .grupos-wrap { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+    .grp-pill {
+      padding: 5px 13px; border-radius: 99px; font-size: 12px; font-weight: 700;
+      border: 1.5px solid var(--border); background: var(--surface); color: var(--muted);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .grp-pill:hover { border-color: var(--azul); color: var(--azul); }
+    .grp-pill.sel-r { background: var(--azul); color: var(--amarelo); border-color: var(--azul); }
+    .grp-pill.sel-l { background: var(--verde); color: #fff; border-color: var(--verde); }
+    .grp-pill.sel-a { background: var(--a-color); color: #fff; border-color: var(--a-color); }
+
+    /* ── GRADE PRINCIPAL ── */
+    .grade-wrap {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .grade-grupo {
+      border-bottom: 2px solid var(--border);
+    }
+    .grade-grupo:last-child { border-bottom: none; }
+
+    /* Rótulo do grupo dentro da grade */
+    .grade-grupo-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      background: var(--surface2);
+      padding: 4px 10px;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+    }
+
+    /* Linha de um time */
+    .grade-row {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      min-height: 34px;
+    }
+    .grade-row:last-child { border-bottom: none; }
+    .grade-row:hover { background: var(--surface2); }
+
+    /* Célula do nome do time */
+    .grade-row-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      width: 130px;
+      min-width: 130px;
+      padding: 4px 8px;
+      border-right: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .grade-row-flag { font-size: 16px; flex-shrink: 0; }
+    .grade-row-name { font-size: 10px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .grade-row-prog { font-size: 9px; color: var(--muted); }
+
+    /* Células das figurinhas */
+    .grade-cells {
+      display: flex;
+      flex: 1;
+      gap: 2px;
+      padding: 3px 6px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .grade-cells::-webkit-scrollbar { display: none; }
+
+    .gcell {
+      width: 42px;
+      height: 28px;
+      border-radius: 4px;
+      border: 1.5px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.3px;
+      color: #1a1a1a;
+      background: #fafafa;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.08s, background 0.1s;
+      user-select: none;
+    }
+    .gcell:hover { transform: scale(1.1); z-index: 2; position: relative; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+
+    /* Estados */
+    .gcell.st-r   { background: var(--azul);     border-color: var(--azul);     color: #fff; }
+    .gcell.st-l   { background: var(--verde);    border-color: var(--verde);    color: #fff; }
+    .gcell.st-a   { background: var(--a-color);  border-color: var(--a-color);  color: #fff; }
+    .gcell.st-dup { background: var(--dup-bg);   border-color: var(--dup-color);color: var(--dup-color); font-weight: 700; }
+
+    /* contador no final da linha */
+    .grade-row-count {
+      font-size: 10px;
+      color: var(--muted);
+      min-width: 36px;
+      padding: 0 6px;
+      text-align: right;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── LEGENDA ── */
+    .legenda {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      font-size: 11px; color: var(--muted);
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .leg-item { display: flex; align-items: center; gap: 4px; }
+    .leg-box  { width: 12px; height: 12px; border-radius: 3px; border: 1px solid #ccc; }
+    .lb-vazia { background: #fafafa; }
+    .lb-r     { background: var(--azul); border-color: var(--azul); }
+    .lb-l     { background: var(--verde); border-color: var(--verde); }
+    .lb-a     { background: var(--a-color); border-color: var(--a-color); }
+    .lb-dup   { background: var(--dup-bg); border-color: var(--dup-color); }
+
+    /* ── TROCAS ── */
+    .troca-section { margin-top: 1.5rem; background: var(--surface); border: 2px solid var(--amarelo); border-radius: 12px; padding: 1.1rem; }
+    .troca-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1.5px; color: var(--verde); margin-bottom: 4px; }
+    .troca-subtitle { font-size: 11px; color: var(--muted); margin-bottom: 1rem; }
+    .troca-bloco { margin-bottom: 1rem; }
+    .troca-bloco-header { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 7px; margin-bottom: 6px; }
+    .tbh-irmaos { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+    .tbh-amigo  { background: #fef3f3; border: 1px solid #f5c6c6; color: var(--a-color); }
+    .troca-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .troca-grid-3 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .troca-col h4 { font-size: 11px; font-weight: 600; margin-bottom: 5px; display: flex; align-items: center; gap: 4px; }
+    .col-r h4 { color: var(--azul); }
+    .col-l h4 { color: var(--verde); }
+    .col-a h4 { color: var(--a-color); }
+    .troca-list  { font-size: 10px; line-height: 1.9; }
+    .troca-empty { font-size: 10px; color: var(--muted); font-style: italic; }
+    .troca-count { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 99px; font-size: 9px; font-weight: 700; padding: 1px 6px; margin-left: 3px; color: var(--muted); }
+    .divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+
+    /* ── FOLHA DE IMPRESSÃO ── */
+    .print-section { margin-top: 1.5rem; }
+    .print-header {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px;
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 0;
+    }
+    .print-header-text .ph-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1.5px; }
+    .print-header-text .ph-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .print-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-imp {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: 8px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 1px;
+      border: none; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-imp-r { background: var(--azul); color: var(--amarelo); }
+    .btn-imp-r:hover { background: #003399; }
+    .btn-imp-l { background: var(--verde); color: #fff; }
+    .btn-imp-l:hover { background: #007a2f; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 11px; border-top: 3px solid var(--amarelo); margin-top: 2rem; background: var(--azul); color: rgba(255,255,255,0.55); }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .page-wrap { display: block; }
+    }
+    @media (max-width: 680px) {
+      .profiles { grid-template-columns: 1fr 1fr; }
+      .amigo-card-wrap { grid-column: span 2; }
+      .troca-grid, .troca-grid-3 { grid-template-columns: 1fr; }
+      header { flex-direction: column; align-items: flex-start; }
+      .grade-row-label { width: 100px; min-width: 100px; }
+      .gcell { width: 36px; height: 24px; font-size: 8px; }
+    }
+  
+/* === BARRA RÁPIDA DE IMPRESSÃO DE FALTANTES === */
+.quick-print-bar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: var(--amarelo); padding: 8px 1.25rem;
+  border-bottom: 2px solid var(--azul);
+}
+.quick-print-label { font-size: 12px; font-weight: 700; color: var(--azul); }
+.quick-filter-select {
+  padding: 6px 10px; border-radius: 7px; border: 1.5px solid var(--azul);
+  font-size: 12px; font-weight: 700; font-family: 'DM Sans', sans-serif;
+  background: #fff; color: var(--azul); cursor: pointer;
+}
+.btn-quick-print {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: 8px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 1px;
+  border: none; cursor: pointer; transition: all 0.15s;
+}
+.qp-r { background: var(--azul); color: var(--amarelo); }
+.qp-r:hover { background: #003399; }
+.qp-l { background: var(--verde); color: #fff; }
+.qp-l:hover { background: #007a2f; }
+.btn-quick-img {
+  padding: 7px 10px; border-radius: 8px; font-size: 14px;
+  border: 1.5px solid var(--azul); background: #fff; color: var(--azul);
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-quick-img:hover { background: var(--azul); color: #fff; }
+
+/* === COMPARADOR ENTRE PESSOAS === */
+.compare-mode-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+.compare-mode-tab {
+  padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 700;
+  border: 1.5px solid var(--border); background: var(--surface2); color: var(--muted);
+  cursor: pointer; transition: all 0.15s;
+}
+.compare-mode-tab:hover { border-color: var(--a-color); color: var(--a-color); }
+.compare-mode-tab.active { background: var(--a-color); color: #fff; border-color: var(--a-color); }
+
+.compare-bar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 12px; padding: 10px 12px;
+  background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px;
+}
+.compare-select {
+  padding: 6px 10px; border-radius: 7px; border: 1.5px solid var(--border);
+  font-size: 12px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+  background: var(--surface); color: var(--text); cursor: pointer;
+}
+.compare-arrow { font-size: 14px; color: var(--muted); }
+.compare-result-label { font-size: 11px; color: var(--muted); margin-left: auto; }
+
+.amigo-grade-wrap {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.amigo-grade-empty {
+  padding: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.amigo-grade-grupo {
+  border-bottom: 1px solid var(--border);
+}
+.amigo-grade-grupo:last-child { border-bottom: none; }
+
+.amigo-grade-grupo-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  background: var(--surface);
+  padding: 3px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.amigo-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  min-height: 30px;
+}
+.amigo-row:last-child { border-bottom: none; }
+
+.amigo-row-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 130px;
+  min-width: 130px;
+  padding: 3px 7px;
+  border-right: 1px solid var(--border);
+}
+.amigo-row-flag { font-size: 14px; }
+.amigo-row-name { font-size: 10px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.amigo-cells {
+  display: flex;
+  flex: 1;
+  gap: 2px;
+  padding: 2px 5px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.amigo-cells::-webkit-scrollbar { display: none; }
+
+.acell {
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  border: 1.5px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  color: #1a1a1a;
+  background: #fff;
+  flex-shrink: 0;
+  user-select: none;
+}
+.acell.util {
+  background: var(--a-color);
+  border-color: var(--a-color);
+  color: #fff;
+}
+
+.btn-imp-amigo {
+  padding: 4px 12px;
+  background: var(--a-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-imp-amigo:hover { background: #6b1010; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="badge">PANINI · 993</div>
+    <h1>⚽ Copa <span>2026</span></h1>
+    <span class="sync-status sync-saving" id="sync-status">⏳ Carregando...</span>
+  </div>
+  <div class="player-bar" id="player-bar">
+    <div class="ptog sel-r" id="tog-r" onclick="setPlayer('r')">📘 Rafael</div>
+    <div class="ptog"       id="tog-l" onclick="setPlayer('l')">📗 Leonardo</div>
+    <div id="friends-bar" style="display:flex;align-items:center;gap:7px;"></div>
+    <button class="btn-add-friend" onclick="addFriendPrompt()">+ Amigo</button>
+  </div>
+</header>
+
+<div class="quick-print-bar">
+  <span class="quick-print-label">🖨️ Lista rápida de faltantes:</span>
+  <select class="quick-filter-select" id="quick-filter-faltam">
+    <option value="0">Faltam até: Todas</option>
+    <option value="1">Faltam até: 1</option>
+    <option value="2">Faltam até: 2</option>
+    <option value="3">Faltam até: 3</option>
+    <option value="4">Faltam até: 4</option>
+    <option value="5">Faltam até: 5</option>
+  </select>
+  <button class="btn-quick-print qp-r" onclick="triggerPrintFaltantes('r')">📘 Faltantes Rafael</button>
+  <button class="btn-quick-img qp-r" onclick="triggerPrintFaltantes('r','image')" title="Baixar como imagem">🖼️</button>
+  <button class="btn-quick-print qp-l" onclick="triggerPrintFaltantes('l')">📗 Faltantes Leonardo</button>
+  <button class="btn-quick-img qp-l" onclick="triggerPrintFaltantes('l','image')" title="Baixar como imagem">🖼️</button>
+</div>
+
+<div class="page-wrap">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main>
+
+    <!-- CARDS DE PROGRESSO -->
+    <div class="profiles" id="profiles-grid">
+      <div class="pcard active-r" id="card-r">
+        <div class="pc-head"><div class="avatar av-r">R</div><div><div class="pname">Rafael</div></div></div>
+        <div class="stats">
+          <div class="stat"><div class="stat-num sn-r" id="total-r">0</div><div class="stat-label">coladas</div></div>
+          <div class="stat"><div class="stat-num sn-r" id="falta-r">993</div><div class="stat-label">faltam</div></div>
+          <div class="stat"><div class="stat-num sn-r" id="dupla-r">0</div><div class="stat-label">repetidas</div></div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-label"><span id="pct-r">0%</span><span>993</span></div>
+          <div class="prog-bg"><div class="prog-fill fill-r" id="bar-r" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="pcard" id="card-l">
+        <div class="pc-head"><div class="avatar av-l">L</div><div><div class="pname">Leonardo</div></div></div>
+        <div class="stats">
+          <div class="stat"><div class="stat-num sn-l" id="total-l">0</div><div class="stat-label">coladas</div></div>
+          <div class="stat"><div class="stat-num sn-l" id="falta-l">993</div><div class="stat-label">faltam</div></div>
+          <div class="stat"><div class="stat-num sn-l" id="dupla-l">0</div><div class="stat-label">repetidas</div></div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-label"><span id="pct-l">0%</span><span>993</span></div>
+          <div class="prog-bg"><div class="prog-fill fill-l" id="bar-l" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div id="friend-cards-wrap" style="display:contents"></div>
+    </div>
+
+    <!-- LEGENDA -->
+    <div class="legenda" id="legenda">
+      <span style="font-size:11px;font-weight:700;color:var(--text)">Legenda:</span>
+      <div class="leg-item"><div class="leg-box lb-vazia"></div> Falta</div>
+      <div class="leg-item"><div class="leg-box lb-r"></div> Rafael</div>
+      <div class="leg-item"><div class="leg-box lb-l"></div> Leonardo</div>
+      <div class="leg-item leg-amigo-hint" style="display:none"><div class="leg-box lb-a"></div> <span id="leg-amigo-name">Amigo</span></div>
+      <div class="leg-item"><div class="leg-box lb-dup"></div> Repetida</div>
+    </div>
+
+    <!-- FILTRO DE GRUPOS -->
+    <div class="grupos-wrap" id="grupos"></div>
+
+    <!-- GRADE PRINCIPAL -->
+    <div class="grade-wrap" id="grade-wrap"></div>
+
+    <!-- TROCAS -->
+    <div class="troca-section">
+      <div class="troca-title">🔄 Trocas</div>
+      <div class="troca-subtitle">Figurinhas que cada um pode oferecer ao outro</div>
+      <div class="troca-bloco">
+        <div class="troca-bloco-header tbh-irmaos">👦👦 Entre Irmãos</div>
+        <div class="troca-grid">
+          <div class="troca-col col-r">
+            <h4>📘 Rafael → Leonardo <span class="troca-count" id="cnt-r-l">0</span></h4>
+            <div id="troca-r" class="troca-empty">—</div>
+          </div>
+          <div class="troca-col col-l">
+            <h4>📗 Leonardo → Rafael <span class="troca-count" id="cnt-l-r">0</span></h4>
+            <div id="troca-l" class="troca-empty">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="troca-bloco">
+        <div class="compare-mode-tabs">
+          <div class="compare-mode-tab active" id="mode-tab-2p" onclick="setCompareMode('2p')">🔄 Comparar 2 pessoas</div>
+          <div class="compare-mode-tab" id="mode-tab-vs" onclick="setCompareMode('vs')">🔴 Amigo vs Rafael+Leo</div>
+          <div class="compare-mode-tab" id="mode-tab-paste" onclick="setCompareMode('paste')">📋 Comparar com Lista</div>
+          <div class="compare-mode-tab" id="mode-tab-viz" onclick="setCompareMode('viz')">👤 Visualizar Lista</div>
+        </div>
+
+        <!-- Modo: comparar 2 pessoas quaisquer -->
+        <div id="compare-mode-2p">
+          <div class="compare-bar">
+            <select class="compare-select" id="compare-a" onchange="onCompareChange()"></select>
+            <span class="compare-arrow">⇄</span>
+            <select class="compare-select" id="compare-b" onchange="onCompareChange()"></select>
+            <span class="compare-result-label" id="compare-result-label"></span>
+            <button class="btn-imp-amigo" onclick="triggerPrintCompare()">🖨️ Imprimir</button>
+            <button class="btn-imp-amigo" onclick="triggerPrintCompare('image')" title="Baixar como imagem">🖼️</button>
+          </div>
+          <div class="amigo-grade-wrap" id="amigo-grade"></div>
+        </div>
+
+        <!-- Modo: amigo vs Rafael+Leo juntos -->
+        <div id="compare-mode-vs" style="display:none">
+          <div class="compare-bar">
+            <span style="font-size:12px;font-weight:600;color:var(--muted)">Amigo:</span>
+            <select class="compare-select" id="compare-vs-friend" onchange="onCompareVsChange()"></select>
+            <span class="compare-result-label" id="compare-vs-result-label"></span>
+            <button class="btn-imp-amigo" onclick="triggerPrintVs()">🖨️ Imprimir</button>
+            <button class="btn-imp-amigo" onclick="triggerPrintVs('image')" title="Baixar como imagem">🖼️</button>
+          </div>
+          <div class="amigo-grade-wrap" id="amigo-vs-grade"></div>
+        </div>
+
+        <!-- Modo: visualizar lista do amigo -->
+        <div id="compare-mode-viz" style="display:none">
+          <div class="paste-section">
+            <label class="paste-label">Nome do amigo:</label>
+            <input id="viz-friend-name" type="text" class="paste-input" style="min-height:auto; padding:8px; margin-bottom:10px;" placeholder="Ex: João, Maria, etc...">
+            <label class="paste-label">Cole aqui a lista de figurinhas que ele tem (uma por linha):</label>
+            <textarea id="viz-input" class="paste-input" placeholder="FWC9
+FWC12
+MEX10
+RSA2
+etc..."></textarea>
+            <div class="paste-btns">
+              <button class="btn-paste btn-paste-compare" onclick="visualizarListaAmigo()">📊 Visualizar</button>
+              <button class="btn-paste btn-paste-clear" onclick="clearVizInput()">✕ Limpar</button>
+            </div>
+          </div>
+          <div id="viz-result" style="margin-top:20px;"></div>
+        </div>
+          <div class="paste-section">
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
+              <label class="paste-label" style="margin:0">Comparar com:</label>
+              <select id="paste-person" class="compare-select" style="flex:1; min-width:150px;">
+                <option value="r">📘 Rafael</option>
+                <option value="l">📗 Leonardo</option>
+              </select>
+            </div>
+            <label class="paste-label">Cole aqui a lista de figurinhas que faltam (uma por linha, ex: A1, B2, C3...)</label>
+            <textarea id="paste-input" class="paste-input" placeholder="A1
+A2
+B3
+B5
+etc..."></textarea>
+            <div class="paste-btns">
+              <button class="btn-paste btn-paste-compare" onclick="comparePasteList()">🔍 Comparar</button>
+              <button class="btn-paste btn-paste-clear" onclick="clearPasteInput()">✕ Limpar</button>
+            </div>
+          </div>
+          <div class="paste-result" id="paste-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FALTANTES CONSOLIDADOS -->
+    <div class="print-section">
+      <div class="print-header">
+        <div class="print-header-text">
+          <div class="ph-title">📋 Faltantes Consolidados</div>
+          <div class="ph-sub">Lista de todas as figurinhas que faltam para Rafael e/ou Leonardo</div>
+        </div>
+        <div class="print-btns">
+          <button class="btn-imp btn-imp-r" onclick="copiarFaltantesConsolidados()">📋 Copiar Lista</button>
+          <button class="btn-imp btn-imp-l" onclick="triggerPrintFaltantesConsolidados()">🖨️ Imprimir</button>
+          <button class="btn-imp btn-imp-l" onclick="triggerPrintFaltantesConsolidados('image')" title="Baixar como imagem">🖼️</button>
+        </div>
+      </div>
+      <div id="faltantes-consolidados-container" style="background:var(--surface); border:2px solid var(--border); border-radius:12px; padding:1rem; margin-top:0; max-height:400px; overflow-y:auto;">
+        <div id="faltantes-consolidados-list" style="font-family:'Courier New',monospace; font-size:12px; line-height:1.8; color:var(--text); white-space:pre-wrap; word-break:break-word;"></div>
+      </div>
+    </div>
+
+    <!-- IMPRESSÃO -->
+    <div class="print-section">
+      <div class="print-header">
+        <div class="print-header-text">
+          <div class="ph-title">🖨️ Folha de Consulta para Troca</div>
+          <div class="ph-sub">Imprima, leve para a escola e marque os quadrinhos — depois traga de volta e atualize aqui</div>
+        </div>
+        <div class="print-btns">
+          <button class="btn-imp btn-imp-r" onclick="triggerPrintSheet('r')">📘 Imprimir Rafael</button>
+          <button class="btn-imp btn-imp-r" onclick="triggerPrintSheet('r','image')" title="Baixar como imagem">🖼️</button>
+          <button class="btn-imp btn-imp-l" onclick="triggerPrintSheet('l')">📗 Imprimir Leonardo</button>
+          <button class="btn-imp btn-imp-l" onclick="triggerPrintSheet('l','image')" title="Baixar como imagem">🖼️</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>Copa do Mundo FIFA 2026™ · Álbum Panini Oficial · 993 figurinhas · Rafael & Leonardo</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBdJlBF2WSF6w2lppU1sM4SPh-p6cE-mRA",
+  authDomain: "copa-2026-album-79fb4.firebaseapp.com",
+  databaseURL: "https://copa-2026-album-79fb4-default-rtdb.firebaseio.com",
+  projectId: "copa-2026-album-79fb4",
+  storageBucket: "copa-2026-album-79fb4.appspot.com",
+  messagingSenderId: "1093315680173",
+  appId: "1:1093315680173:web:3709411715457eb6357324"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+const dbRef = ref(db, 'album');
+
+const ESPECIAIS = [
+  { id:'abertura', flag:'🌍', nome:'Abertura',         grp:'★', total:8,  tipo:'esp', prefixo:'FWC', offset:0 },
+  { id:'selecoes',  flag:'🏟️', nome:'Seleções Antigas', grp:'★', total:11, tipo:'esp', prefixo:'FWC', offset:8 },
+  { id:'cocacola',  flag:'🥤', nome:'Coca-Cola',        grp:'★', total:14, tipo:'esp', prefixo:'CC',  offset:0 },
+];
+const TIMES = [
+  { id:'mex', flag:'🇲🇽', nome:'México',          grp:'A', pag:8  },
+  { id:'rsa', flag:'🇿🇦', nome:'África do Sul',    grp:'A', pag:10 },
+  { id:'kor', flag:'🇰🇷', nome:'Coreia do Sul',    grp:'A', pag:12 },
+  { id:'cze', flag:'🇨🇿', nome:'Tchéquia',         grp:'A', pag:14 },
+  { id:'can', flag:'🇨🇦', nome:'Canadá',           grp:'B', pag:16 },
+  { id:'bih', flag:'🇧🇦', nome:'Bósnia-Herz.',     grp:'B', pag:18 },
+  { id:'qat', flag:'🇶🇦', nome:'Catar',            grp:'B', pag:20 },
+  { id:'sui', flag:'🇨🇭', nome:'Suíça',            grp:'B', pag:22 },
+  { id:'bra', flag:'🇧🇷', nome:'Brasil',           grp:'C', pag:24 },
+  { id:'mar', flag:'🇲🇦', nome:'Marrocos',         grp:'C', pag:26 },
+  { id:'hai', flag:'🇭🇹', nome:'Haiti',            grp:'C', pag:28 },
+  { id:'sco', flag:'🏴󠁧󠁢󠁳󠁣󠁴󠁿', nome:'Escócia',          grp:'C', pag:30 },
+  { id:'usa', flag:'🇺🇸', nome:'EUA',              grp:'D', pag:32 },
+  { id:'par', flag:'🇵🇾', nome:'Paraguai',         grp:'D', pag:34 },
+  { id:'aus', flag:'🇦🇺', nome:'Austrália',        grp:'D', pag:36 },
+  { id:'tur', flag:'🇹🇷', nome:'Turquia',          grp:'D', pag:38 },
+  { id:'ger', flag:'🇩🇪', nome:'Alemanha',         grp:'E', pag:40 },
+  { id:'cuw', flag:'🇨🇼', nome:'Curaçao',          grp:'E', pag:42 },
+  { id:'civ', flag:'🇨🇮', nome:"Côte d'Ivoire",   grp:'E', pag:44 },
+  { id:'ecu', flag:'🇪🇨', nome:'Equador',          grp:'E', pag:46 },
+  { id:'ned', flag:'🇳🇱', nome:'Holanda',          grp:'F', pag:48 },
+  { id:'jpn', flag:'🇯🇵', nome:'Japão',            grp:'F', pag:50 },
+  { id:'swe', flag:'🇸🇪', nome:'Suécia',           grp:'F', pag:52 },
+  { id:'tun', flag:'🇹🇳', nome:'Tunísia',          grp:'F', pag:54 },
+  { id:'bel', flag:'🇧🇪', nome:'Bélgica',          grp:'G', pag:58 },
+  { id:'egy', flag:'🇪🇬', nome:'Egito',            grp:'G', pag:60 },
+  { id:'irn', flag:'🇮🇷', nome:'Irã',              grp:'G', pag:62 },
+  { id:'nzl', flag:'🇳🇿', nome:'Nova Zelândia',    grp:'G', pag:64 },
+  { id:'esp', flag:'🇪🇸', nome:'Espanha',          grp:'H', pag:66 },
+  { id:'cpv', flag:'🇨🇻', nome:'Cabo Verde',       grp:'H', pag:68 },
+  { id:'ksa', flag:'🇸🇦', nome:'Arábia Saudita',   grp:'H', pag:70 },
+  { id:'uru', flag:'🇺🇾', nome:'Uruguai',          grp:'H', pag:72 },
+  { id:'fra', flag:'🇫🇷', nome:'França',           grp:'I', pag:74 },
+  { id:'sen', flag:'🇸🇳', nome:'Senegal',          grp:'I', pag:76 },
+  { id:'irq', flag:'🇮🇶', nome:'Iraque',           grp:'I', pag:78 },
+  { id:'nor', flag:'🇳🇴', nome:'Noruega',          grp:'I', pag:80 },
+  { id:'arg', flag:'🇦🇷', nome:'Argentina',        grp:'J', pag:82 },
+  { id:'alg', flag:'🇩🇿', nome:'Argélia',          grp:'J', pag:84 },
+  { id:'aut', flag:'🇦🇹', nome:'Áustria',          grp:'J', pag:86 },
+  { id:'jor', flag:'🇯🇴', nome:'Jordânia',         grp:'J', pag:88 },
+  { id:'por', flag:'🇵🇹', nome:'Portugal',         grp:'K', pag:90 },
+  { id:'cod', flag:'🇨🇩', nome:'Congo DR',         grp:'K', pag:92 },
+  { id:'uzb', flag:'🇺🇿', nome:'Uzbequistão',      grp:'K', pag:94 },
+  { id:'col', flag:'🇨🇴', nome:'Colômbia',         grp:'K', pag:96 },
+  { id:'eng', flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', nome:'Inglaterra',       grp:'L', pag:98  },
+  { id:'cro', flag:'🇭🇷', nome:'Croácia',          grp:'L', pag:100 },
+  { id:'gha', flag:'🇬🇭', nome:'Gana',             grp:'L', pag:102 },
+  { id:'pan', flag:'🇵🇦', nome:'Panamá',           grp:'L', pag:104 },
+].map(t => ({ ...t, total:20, tipo:'time' }));
+
+const SECOES = [...ESPECIAIS, ...TIMES];
+const GRUPOS  = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+const TOTAL_GLOBAL = 993;
+
+// Mapa inverso: "A1" → {secId:"mex", i:1}
+const labelMap = {};
+SECOES.forEach(sec => {
+  for (let i=1; i<=sec.total; i++) {
+    const lbl = sec.tipo === 'esp' ? (sec.prefixo + (sec.offset + i)) : (sec.id.toUpperCase() + i);
+    labelMap[lbl] = { secId:sec.id, i };
+  }
+});
+
+let currentPlayer = 'r';
+let currentGrp    = 'todos'; // 'todos' ou letra do grupo
+let state = {};
+let friends = []; // [{id:'f1', name:'João'}, ...]
+let compareA = 'r';
+let compareB = 'l';
+let compareMode = '2p'; // '2p' ou 'vs'
+let compareVsFriend = null;
+let saveTimer = null;
+
+function setStatus(s) {
+  const el = document.getElementById('sync-status');
+  if (s==='ok')     { el.className='sync-status sync-ok';     el.textContent='✅ Sincronizado'; }
+  else if(s==='saving'){ el.className='sync-status sync-saving'; el.textContent='⏳ Salvando...'; }
+  else              { el.className='sync-status sync-off';    el.textContent='❌ Sem conexão'; }
+}
+
+onValue(dbRef, (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    state = data._stickers || data;
+    if (Array.isArray(data._friends)) {
+      friends = data._friends;
+    } else if (data._amigoName) {
+      // Migração de versão antiga com 1 amigo fixo (id 'a')
+      friends = [{ id: 'a', name: data._amigoName }];
+    }
+  }
+  if (!friends.length) friends = [];
+  // Garante que compareA/compareB ainda existem
+  ensureCompareValid();
+  setStatus('ok');
+  renderAll();
+}, () => {
+  setStatus('off');
+  try {
+    const cached = JSON.parse(localStorage.getItem('copa2026_fb') || '{}');
+    state = cached._stickers || cached;
+    if (Array.isArray(cached._friends)) friends = cached._friends;
+  } catch(e) {}
+  renderAll();
+});
+
+function saveToFirebase() {
+  clearTimeout(saveTimer);
+  setStatus('saving');
+  saveTimer = setTimeout(() => {
+    set(dbRef, { _stickers: state, _friends: friends })
+      .then(() => setStatus('ok'))
+      .catch(() => {
+        setStatus('off');
+        try { localStorage.setItem('copa2026_fb', JSON.stringify({ _stickers: state, _friends: friends })); } catch(e) {}
+      });
+  }, 800);
+}
+
+function ensureCompareValid() {
+  const allIds = ['r','l', ...friends.map(f=>f.id)];
+  if (!allIds.includes(compareA)) compareA = allIds[0] || 'r';
+  if (!allIds.includes(compareB)) compareB = allIds.find(id=>id!==compareA) || 'l';
+}
+
+function personName(id) {
+  if (id === 'r') return 'Rafael';
+  if (id === 'l') return 'Leonardo';
+  const f = friends.find(fr => fr.id === id);
+  return f ? f.name : id;
+}
+
+window.addFriendPrompt = function() {
+  const name = prompt('Nome do amigo:');
+  if (!name || !name.trim()) return;
+  const id = 'f' + Date.now();
+  friends.push({ id, name: name.trim() });
+  saveToFirebase();
+  renderPlayerBar();
+  renderAll();
+};
+
+window.removeFriend = function(id, evt) {
+  if (evt) evt.stopPropagation();
+  const f = friends.find(fr => fr.id === id);
+  if (!f) return;
+  if (!confirm(`Remover ${f.name}? As figurinhas marcadas dele(a) serão perdidas.`)) return;
+  friends = friends.filter(fr => fr.id !== id);
+  // Limpa state desse amigo
+  Object.keys(state).forEach(k => {
+    if (k.includes(`_${id}_`)) delete state[k];
+  });
+  if (currentPlayer === id) currentPlayer = 'r';
+  saveToFirebase();
+  ensureCompareValid();
+  renderPlayerBar();
+  renderAll();
+};
+
+function renderPlayerBar() {
+  const wrap = document.getElementById('friends-bar');
+  wrap.innerHTML = '';
+  friends.forEach(f => {
+    const chip = document.createElement('div');
+    chip.className = 'friend-chip-wrap';
+    const btn = document.createElement('div');
+    btn.className = 'ptog' + (currentPlayer === f.id ? ' sel-friend' : '');
+    btn.textContent = '🔴 ' + f.name;
+    btn.onclick = () => setPlayer(f.id);
+    chip.appendChild(btn);
+    const xBtn = document.createElement('button');
+    xBtn.className = 'friend-remove-x';
+    xBtn.textContent = '✕';
+    xBtn.title = 'Remover ' + f.name;
+    xBtn.onclick = (e) => removeFriend(f.id, e);
+    chip.appendChild(xBtn);
+    wrap.appendChild(chip);
+  });
+  document.getElementById('tog-r').className = 'ptog' + (currentPlayer==='r'?' sel-r':'');
+  document.getElementById('tog-l').className = 'ptog' + (currentPlayer==='l'?' sel-l':'');
+}
+
+function key(secId, n, p) { return `${secId}_${p}_${n}`; }
+
+// Imprime via iframe oculto — evita bloqueio de pop-up e tela em branco
+function printHTML(fullHTML) {
+  const oldFrame = document.getElementById('print-frame-hidden');
+  if (oldFrame) oldFrame.remove();
+
+  const iframe = document.createElement('iframe');
+  iframe.id = 'print-frame-hidden';
+  iframe.style.position = 'fixed';
+  iframe.style.right = '0';
+  iframe.style.bottom = '0';
+  iframe.style.width = '0';
+  iframe.style.height = '0';
+  iframe.style.border = '0';
+  document.body.appendChild(iframe);
+
+  const doc = iframe.contentWindow.document;
+  doc.open();
+  doc.write(fullHTML);
+  doc.close();
+
+  iframe.onload = function() {
+    setTimeout(function() {
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
+    }, 250);
+  };
+  // fallback se onload não disparar
+  setTimeout(function() {
+    try { iframe.contentWindow.focus(); iframe.contentWindow.print(); } catch(e) {}
+  }, 700);
+}
+
+// Gera uma imagem PNG da folha e baixa direto — útil no celular,
+// onde o diálogo de impressão às vezes não tem como confirmar.
+function downloadAsImage(fullHTML, filename) {
+  const oldFrame = document.getElementById('image-frame-hidden');
+  if (oldFrame) oldFrame.remove();
+
+  const iframe = document.createElement('iframe');
+  iframe.id = 'image-frame-hidden';
+  // Precisa estar visível (fora da tela) para o html2canvas conseguir renderizar
+  iframe.style.position = 'fixed';
+  iframe.style.left = '-9999px';
+  iframe.style.top = '0';
+  iframe.style.width = '1200px';
+  iframe.style.height = '1697px'; // proporção A3
+  iframe.style.border = '0';
+  document.body.appendChild(iframe);
+
+  const doc = iframe.contentWindow.document;
+  doc.open();
+  doc.write(fullHTML);
+  doc.close();
+
+  function capture() {
+    const body = iframe.contentWindow.document.body;
+    if (typeof iframe.contentWindow.html2canvas !== 'function') {
+      // fallback: usa html2canvas do documento principal sobre o conteúdo do iframe
+      window.html2canvas(body, { scale: 2, backgroundColor: '#ffffff', useCORS: true })
+        .then(finishCanvas)
+        .catch(handleError);
+    } else {
+      iframe.contentWindow.html2canvas(body, { scale: 2, backgroundColor: '#ffffff', useCORS: true })
+        .then(finishCanvas)
+        .catch(handleError);
+    }
+  }
+
+  function finishCanvas(canvas) {
+    canvas.toBlob(function(blob) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename + '.png';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        iframe.remove();
+      }, 500);
+    }, 'image/png');
+  }
+
+  function handleError(err) {
+    alert('Não foi possível gerar a imagem. Tente novamente ou use a opção de imprimir.');
+    iframe.remove();
+  }
+
+  iframe.onload = function() {
+    // Espera fontes/import carregarem antes de capturar
+    setTimeout(capture, 600);
+  };
+  setTimeout(function() {
+    if (document.body.contains(iframe)) capture();
+  }, 1200);
+}
+
+function getLabel(sec, i) {
+  if (sec.tipo === 'esp' && sec.prefixo) {
+    return sec.prefixo + (sec.offset + i);
+  }
+  if (sec.tipo === 'time') {
+    return sec.id.toUpperCase() + i;
+  }
+  return sec.nome + ' ' + i;
+}
+
+function isFriend(p) { return p !== 'r' && p !== 'l'; }
+
+function ciclar(secId, n) {
+  const k = key(secId, n, currentPlayer);
+  const cur = state[k] || 'nao';
+  if (isFriend(currentPlayer)) {
+    state[k] = cur === 'nao' ? 'dupla' : 'nao';
+  } else {
+    state[k] = cur==='nao' ? 'sim' : cur==='sim' ? 'dupla' : 'nao';
+  }
+  saveToFirebase();
+  renderGrade();
+  renderStats();
+  renderTrocas();
+  renderSidebar();
+}
+// Expõe para onclick inline
+Object.assign(window, { ciclar });
+
+function getSecoesFiltradas() {
+  if (currentGrp === 'todos') return SECOES;
+  return SECOES.filter(s => s.grp === currentGrp);
+}
+
+// ── GRUPOS ──
+function renderGrupos() {
+  const c = document.getElementById('grupos');
+  c.innerHTML = '';
+  const playerClass = isFriend(currentPlayer) ? 'a' : currentPlayer;
+
+  const all = document.createElement('div');
+  all.className = 'grp-pill' + (currentGrp==='todos' ? ` sel-${playerClass}` : '');
+  all.textContent = 'Todos';
+  all.onclick = () => { currentGrp = 'todos'; renderGrupos(); renderGrade(); };
+  c.appendChild(all);
+
+  GRUPOS.forEach(g => {
+    const d = document.createElement('div');
+    d.className = 'grp-pill' + (g===currentGrp ? ` sel-${playerClass}` : '');
+    d.textContent = g==='★' ? '★ Especiais' : 'Grupo ' + g;
+    d.onclick = () => { currentGrp = g; renderGrupos(); renderGrade(); };
+    c.appendChild(d);
+  });
+}
+
+// ── GRADE PRINCIPAL ──
+function renderGrade() {
+  const wrap = document.getElementById('grade-wrap');
+  wrap.innerHTML = '';
+
+  // Legenda: mostra amigo se selecionado
+  document.querySelector('.leg-amigo-hint').style.display = isFriend(currentPlayer) ? 'flex' : 'none';
+  if (isFriend(currentPlayer)) {
+    document.getElementById('leg-amigo-name').textContent = personName(currentPlayer);
+  }
+
+  const secoesFiltradas = getSecoesFiltradas();
+
+  // Agrupa por grupo
+  const grupos = currentGrp === 'todos' ? GRUPOS : [currentGrp];
+
+  grupos.forEach(grp => {
+    const secoes = secoesFiltradas.filter(s => s.grp === grp);
+    if (!secoes.length) return;
+
+    const grupoDiv = document.createElement('div');
+    grupoDiv.className = 'grade-grupo';
+
+    // Rótulo do grupo
+    const label = document.createElement('div');
+    label.className = 'grade-grupo-label';
+    label.textContent = grp === '★' ? '★  ESPECIAIS' : 'GRUPO  ' + grp;
+    grupoDiv.appendChild(label);
+
+    secoes.forEach(sec => {
+      const row = document.createElement('div');
+      row.className = 'grade-row';
+
+      // Label do time (clicável para scroll / destaque)
+      let col = 0, dup = 0;
+      for (let i = 1; i <= sec.total; i++) {
+        const v = state[key(sec.id, i, currentPlayer)] || 'nao';
+        if (v === 'sim')   col++;
+        if (v === 'dupla') dup++;
+      }
+
+      const rowLabel = document.createElement('div');
+      rowLabel.className = 'grade-row-label';
+      const progText = isFriend(currentPlayer)
+        ? `${dup} rep.`
+        : `${col + dup}/${sec.total}`;
+      rowLabel.innerHTML =
+        `<span class="grade-row-flag">${sec.flag}</span>` +
+        `<div style="min-width:0"><div class="grade-row-name">${sec.nome}</div>` +
+        `<div class="grade-row-prog">${progText}</div></div>`;
+      row.appendChild(rowLabel);
+
+      // Células
+      const cells = document.createElement('div');
+      cells.className = 'grade-cells';
+
+      for (let i = 1; i <= sec.total; i++) {
+        const v = state[key(sec.id, i, currentPlayer)] || 'nao';
+        const cell = document.createElement('div');
+
+        let cls = 'gcell';
+        if (isFriend(currentPlayer)) {
+          cls += v === 'dupla' ? ' st-a' : '';
+        } else {
+          cls += v === 'sim'   ? ` st-${currentPlayer}` :
+                 v === 'dupla' ? ' st-dup' : '';
+        }
+        cell.className = cls;
+        // Mostra número apenas quando vazia ou dupla
+        const showNum = v === 'nao' || v === 'dupla';
+        const lbl = getLabel(sec, i);
+        const cellText = sec.tipo === 'esp' ? lbl : (sec.id.toUpperCase() + i);
+        cell.textContent = showNum ? cellText : '';
+        cell.title = lbl;
+
+        const _secId = sec.id, _i = i;
+        cell.onclick = () => ciclar(_secId, _i);
+        cells.appendChild(cell);
+      }
+      row.appendChild(cells);
+
+      // Contador
+      const cnt = document.createElement('div');
+      cnt.className = 'grade-row-count';
+      if (isFriend(currentPlayer)) {
+        cnt.textContent = dup > 0 ? `${dup}✕` : '—';
+        cnt.style.color = dup > 0 ? 'var(--a-color)' : 'var(--muted)';
+      } else {
+        const total = col + dup;
+        cnt.textContent = `${total}/${sec.total}`;
+        cnt.style.color = total === sec.total ? 'var(--verde)' : 'var(--muted)';
+      }
+      row.appendChild(cnt);
+
+      grupoDiv.appendChild(row);
+    });
+
+    wrap.appendChild(grupoDiv);
+  });
+}
+
+// ── STATS ──
+function renderStats() {
+  ['r','l'].forEach(p => {
+    let col = 0, dup = 0;
+    SECOES.forEach(sec => {
+      for (let i = 1; i <= sec.total; i++) {
+        const v = state[key(sec.id, i, p)] || 'nao';
+        if (v==='sim') col++; else if (v==='dupla') dup++;
+      }
+    });
+    document.getElementById(`total-${p}`).textContent = col;
+    document.getElementById(`falta-${p}`).textContent = TOTAL_GLOBAL - col;
+    document.getElementById(`dupla-${p}`).textContent = dup;
+    document.getElementById(`pct-${p}`).textContent   = Math.round(col/TOTAL_GLOBAL*100) + '%';
+    document.getElementById(`bar-${p}`).style.width   = Math.round(col/TOTAL_GLOBAL*100) + '%';
+  });
+
+  document.getElementById('card-r').className = 'pcard' + (currentPlayer==='r'?' active-r':'');
+  document.getElementById('card-l').className = 'pcard' + (currentPlayer==='l'?' active-l':'');
+
+  renderFriendCards();
+}
+
+function renderFriendCards() {
+  const wrap = document.getElementById('friend-cards-wrap');
+  wrap.innerHTML = '';
+  friends.forEach(f => {
+    let dup = 0, utilR = 0, utilL = 0;
+    SECOES.forEach(sec => {
+      for (let i=1; i<=sec.total; i++) {
+        const va = state[key(sec.id,i,f.id)] || 'nao';
+        if (va === 'dupla') {
+          dup++;
+          if ((state[key(sec.id,i,'r')]||'nao')==='nao') utilR++;
+          if ((state[key(sec.id,i,'l')]||'nao')==='nao') utilL++;
+        }
+      }
+    });
+    const card = document.createElement('div');
+    card.className = 'pcard amigo-card' + (currentPlayer===f.id ? ' active-a' : '');
+    card.innerHTML = `
+      <div class="pc-head"><div class="avatar av-a">${f.name.charAt(0).toUpperCase()}</div><div><div class="pname">${f.name}</div><div class="amigo-hint">só repetidas para troca</div></div></div>
+      <div class="stats">
+        <div class="stat"><div class="stat-num sn-a">${dup}</div><div class="stat-label">repetidas</div></div>
+        <div class="stat"><div class="stat-num sn-a">${utilR}</div><div class="stat-label">p/ Rafael</div></div>
+        <div class="stat"><div class="stat-num sn-a">${utilL}</div><div class="stat-label">p/ Leo</div></div>
+      </div>`;
+    wrap.appendChild(card);
+  });
+}
+
+// ── TROCAS (entre irmãos) ──
+function renderTrocas() {
+  const rL=[], lR=[];
+  SECOES.forEach(sec => {
+    for (let i=1; i<=sec.total; i++) {
+      const r = state[key(sec.id,i,'r')] || 'nao';
+      const l = state[key(sec.id,i,'l')] || 'nao';
+      const lbl = getLabel(sec, i);
+      if (r==='dupla' && l==='nao') rL.push(lbl);
+      if (l==='dupla' && r==='nao') lR.push(lbl);
+    }
+  });
+  function fill(elId, cntId, list) {
+    const el = document.getElementById(elId);
+    const cn = document.getElementById(cntId);
+    if (!el) return;
+    el.className = list.length ? 'troca-list' : 'troca-empty';
+    el.textContent = list.length ? list.join(', ') : 'Nenhuma';
+    cn.textContent = list.length;
+  }
+  fill('troca-r', 'cnt-r-l', rL);
+  fill('troca-l', 'cnt-l-r', lR);
+  renderComparePicker();
+  renderCompareGrade();
+  if (compareMode === 'vs') {
+    renderVsPicker();
+    renderVsGrade();
+  }
+}
+
+// ── COMPARADOR ENTRE DUAS PESSOAS QUAISQUER ──
+function renderComparePicker() {
+  const selA = document.getElementById('compare-a');
+  const selB = document.getElementById('compare-b');
+  if (!selA || !selB) return;
+
+  const options = [
+    { id: 'r', label: '📘 Rafael' },
+    { id: 'l', label: '📗 Leonardo' },
+    ...friends.map(f => ({ id: f.id, label: '🔴 ' + f.name }))
+  ];
+
+  function fillSelect(sel, selectedId) {
+    sel.innerHTML = '';
+    options.forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt.id;
+      o.textContent = opt.label;
+      if (opt.id === selectedId) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+  fillSelect(selA, compareA);
+  fillSelect(selB, compareB);
+}
+
+window.onCompareChange = function() {
+  compareA = document.getElementById('compare-a').value;
+  compareB = document.getElementById('compare-b').value;
+  renderCompareGrade();
+};
+
+window.setCompareMode = function(mode) {
+  compareMode = mode;
+  document.getElementById('mode-tab-2p').className = 'compare-mode-tab' + (mode==='2p' ? ' active' : '');
+  document.getElementById('mode-tab-vs').className = 'compare-mode-tab' + (mode==='vs' ? ' active' : '');
+  document.getElementById('mode-tab-paste').className = 'compare-mode-tab' + (mode==='paste' ? ' active' : '');
+  document.getElementById('mode-tab-viz').className = 'compare-mode-tab' + (mode==='viz' ? ' active' : '');
+  document.getElementById('compare-mode-2p').style.display = mode==='2p' ? '' : 'none';
+  document.getElementById('compare-mode-vs').style.display = mode==='vs' ? '' : 'none';
+  document.getElementById('compare-mode-paste').style.display = mode==='paste' ? '' : 'none';
+  document.getElementById('compare-mode-viz').style.display = mode==='viz' ? '' : 'none';
+  if (mode === '2p') {
+    renderComparePicker();
+    renderCompareGrade();
+  } else if (mode === 'vs') {
+    renderVsPicker();
+    renderVsGrade();
+  } else if (mode === 'paste') {
+    updatePastePeoplePicker();
+  }
+};
+
+function updatePastePeoplePicker() {
+  const sel = document.getElementById('paste-person');
+  if (!sel) return;
+  const currentValue = sel.value;
+  sel.innerHTML = '';
+  const options = [
+    { id: 'r', label: '📘 Rafael' },
+    { id: 'l', label: '📗 Leonardo' },
+    ...friends.map(f => ({ id: f.id, label: '🔴 ' + f.name }))
+  ];
+  options.forEach(opt => {
+    const o = document.createElement('option');
+    o.value = opt.id;
+    o.textContent = opt.label;
+    if (opt.id === currentValue) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+
+// ── MODO: AMIGO VS RAFAEL+LEO JUNTOS ──
+function renderVsPicker() {
+  const sel = document.getElementById('compare-vs-friend');
+  if (!sel) return;
+  if (!friends.length) {
+    sel.innerHTML = '<option value="">Nenhum amigo cadastrado</option>';
+    compareVsFriend = null;
+    return;
+  }
+  if (!compareVsFriend || !friends.find(f => f.id === compareVsFriend)) {
+    compareVsFriend = friends[0].id;
+  }
+  sel.innerHTML = '';
+  friends.forEach(f => {
+    const o = document.createElement('option');
+    o.value = f.id;
+    o.textContent = '🔴 ' + f.name;
+    if (f.id === compareVsFriend) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+
+window.onCompareVsChange = function() {
+  compareVsFriend = document.getElementById('compare-vs-friend').value;
+  renderVsGrade();
+};
+
+function getVsUteis() {
+  // Retorna o que o amigo tem repetida e que Rafael OU Leonardo precisa (sem duplicar)
+  const result = [];
+  if (!compareVsFriend) return result;
+  SECOES.forEach(sec => {
+    const uteis = [];
+    for (let i=1; i<=sec.total; i++) {
+      const va = state[key(sec.id,i,compareVsFriend)] || 'nao';
+      if (va !== 'dupla') continue;
+      const r = state[key(sec.id,i,'r')] || 'nao';
+      const l = state[key(sec.id,i,'l')] || 'nao';
+      const rTem = r === 'sim' || r === 'dupla';
+      const lTem = l === 'sim' || l === 'dupla';
+      if (!rTem || !lTem) uteis.push(i);
+    }
+    if (uteis.length) result.push({ sec, uteis });
+  });
+  return result;
+}
+
+function renderVsGrade() {
+  const container = document.getElementById('amigo-vs-grade');
+  const labelEl = document.getElementById('compare-vs-result-label');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (!friends.length) {
+    container.innerHTML = '<div class="amigo-grade-empty">Adicione um amigo primeiro (botão "+ Amigo" no topo)</div>';
+    if (labelEl) labelEl.textContent = '';
+    return;
+  }
+
+  const dados = getVsUteis();
+  const total = dados.reduce((s,d)=>s+d.uteis.length, 0);
+  const nameF = personName(compareVsFriend);
+
+  if (labelEl) labelEl.textContent = `${nameF} pode dar para Rafael ou Leonardo: ${total}`;
+
+  if (!total) {
+    container.innerHTML = `<div class="amigo-grade-empty">${nameF} não tem repetidas que Rafael ou Leonardo precisem</div>`;
+    return;
+  }
+
+  const grupos = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+  grupos.forEach(grp => {
+    const secoes = dados.filter(d => d.sec.grp === grp);
+    if (!secoes.length) return;
+
+    const grupoDiv = document.createElement('div');
+    grupoDiv.className = 'amigo-grade-grupo';
+
+    const glabel = document.createElement('div');
+    glabel.className = 'amigo-grade-grupo-label';
+    glabel.textContent = grp === '★' ? '★  ESPECIAIS' : 'GRUPO  ' + grp;
+    grupoDiv.appendChild(glabel);
+
+    secoes.forEach(({ sec, uteis }) => {
+      const row = document.createElement('div');
+      row.className = 'amigo-row';
+
+      const label = document.createElement('div');
+      label.className = 'amigo-row-label';
+      label.innerHTML = `<span class="amigo-row-flag">${sec.flag}</span><span class="amigo-row-name">${sec.nome}</span>`;
+      row.appendChild(label);
+
+      const cells = document.createElement('div');
+      cells.className = 'amigo-cells';
+
+      uteis.forEach(i => {
+        const cell = document.createElement('div');
+        cell.className = 'acell util';
+        const lbl = getLabel(sec, i);
+        cell.textContent = sec.tipo === 'esp' ? lbl : (sec.id.toUpperCase() + i);
+        cell.title = `${lbl} · Rafael ou Leonardo precisa`;
+        cells.appendChild(cell);
+      });
+
+      row.appendChild(cells);
+
+      const cnt = document.createElement('div');
+      cnt.className = 'grade-row-count';
+      cnt.textContent = uteis.length > 0 ? String(uteis.length) : '—';
+      cnt.style.color = uteis.length > 0 ? 'var(--a-color)' : 'var(--muted)';
+      row.appendChild(cnt);
+
+      grupoDiv.appendChild(row);
+    });
+
+    container.appendChild(grupoDiv);
+  });
+}
+
+window.triggerPrintVs = function(mode) {
+  mode = mode || 'print';
+  const dados = getVsUteis();
+  const date = new Date().toLocaleDateString('pt-BR');
+  const accent = '#8b1a1a';
+  const nameF = personName(compareVsFriend);
+  const total = dados.reduce((s,d)=>s+d.uteis.length, 0);
+
+  if (!friends.length) {
+    alert('Adicione um amigo primeiro (botão "+ Amigo" no topo).');
+    return;
+  }
+  if (!total) {
+    alert(`${nameF} não tem nenhuma figurinha repetida que Rafael ou Leonardo precisem ainda.`);
+    return;
+  }
+
+  const css = `
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#fff;color:#000;padding:10mm 10mm}
+    @page{size:A3 portrait;margin:0}
+    .hdr{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:3px solid ${accent};padding-bottom:6px;margin-bottom:8px}
+    .htitle{font-family:'Bebas Neue',sans-serif;font-size:22pt;letter-spacing:2px;color:${accent};line-height:1}
+    .hsub{font-size:8pt;color:#666;margin-top:2px}
+    .leg{display:flex;gap:14px;align-items:center;font-size:8pt;color:#444}
+    .li{display:flex;align-items:center;gap:4px}
+    .lb{width:10px;height:10px;border:1px solid #999;border-radius:2px;display:inline-block;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .lbu{background:${accent};border-color:${accent}}
+    .glabel{font-family:'Bebas Neue',sans-serif;font-size:8pt;letter-spacing:3px;color:#888;border-top:1.5px solid #ddd;padding:5pt 0 2pt;margin-top:4pt}
+    .gblock{break-inside:avoid}
+    .row{display:flex;align-items:center;gap:3pt;margin-bottom:2pt;break-inside:avoid}
+    .rlabel{display:flex;align-items:center;gap:3pt;width:90pt;min-width:90pt}
+    .rflag{font-size:10pt}
+    .rname{font-size:7pt;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cells{display:flex;gap:1.5pt;flex-wrap:wrap}
+    .cell{width:19pt;height:13.5pt;border:0.75pt solid #ccc;border-radius:2pt;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:5.8pt;flex-shrink:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .cell.u{background:${accent} !important;border-color:${accent} !important;color:#fff !important}
+    .rcnt{font-size:6.5pt;color:#999;width:28pt;text-align:right;flex-shrink:0}
+  `;
+
+  let body = `<div class="hdr"><div><div class="htitle">⚽ ${nameF} → Rafael + Leonardo</div><div class="hsub">${total} figurinha${total!==1?'s':''} que algum dos dois precisa · ${date}</div></div><div class="leg"><div class="li"><div class="lb lbu"></div> ${nameF} tem repetida</div></div></div>`;
+
+  const grupos = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+  grupos.forEach(grp => {
+    const secoes = dados.filter(d => d.sec.grp === grp);
+    if (!secoes.length) return;
+    body += `<div class="glabel">${grp==='★'?'★   ESPECIAIS':'GRUPO   '+grp}</div><div class="gblock">`;
+    secoes.forEach(({ sec, uteis }) => {
+      body += `<div class="row"><div class="rlabel"><span class="rflag">${sec.flag}</span><span class="rname">${sec.nome}</span></div><div class="cells">`;
+      uteis.forEach(i => {
+        const lbl = getLabel(sec, i);
+        const txt = sec.tipo === 'esp' ? lbl : (sec.id.toUpperCase() + i);
+        body += `<div class="cell u">${txt}</div>`;
+      });
+      body += `</div><div class="rcnt">${uteis.length}</div></div>`;
+    });
+    body += `</div>`;
+  });
+
+  const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Copa 2026 — ${nameF} vs Irmãos</title><style>${css}</style></head><body>${body}</body></html>`;
+
+  if (mode === 'image') {
+    downloadAsImage(fullHTML, 'comparar-' + nameF.toLowerCase() + '-vs-irmaos');
+  } else {
+    printHTML(fullHTML);
+  }
+};
+
+function getCompareUteis() {
+  // Retorna o que A tem repetida e B não tem (útil para B)
+  const result = [];
+  SECOES.forEach(sec => {
+    const uteis = [];
+    for (let i=1; i<=sec.total; i++) {
+      const va = state[key(sec.id,i,compareA)] || 'nao';
+      const isADup = va === 'dupla';
+      if (!isADup) continue;
+      const vb = state[key(sec.id,i,compareB)] || 'nao';
+      const bTem = vb === 'sim' || vb === 'dupla';
+      if (!bTem) uteis.push(i);
+    }
+    if (uteis.length) result.push({ sec, uteis });
+  });
+  return result;
+}
+
+function renderCompareGrade() {
+  const container = document.getElementById('amigo-grade');
+  const labelEl = document.getElementById('compare-result-label');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const dados = getCompareUteis();
+  const total = dados.reduce((s,d)=>s+d.uteis.length, 0);
+  const nameA = personName(compareA);
+  const nameB = personName(compareB);
+
+  if (labelEl) labelEl.textContent = nameA + ' pode dar para ' + nameB + ': ' + total;
+
+  if (!total) {
+    container.innerHTML = '<div class="amigo-grade-empty">' + nameA + ' não tem repetidas que ' + nameB + ' precise</div>';
+    return;
+  }
+
+  const grupos = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+  grupos.forEach(grp => {
+    const secoes = dados.filter(d => d.sec.grp === grp);
+    if (!secoes.length) return;
+
+    const grupoDiv = document.createElement('div');
+    grupoDiv.className = 'amigo-grade-grupo';
+
+    const glabel = document.createElement('div');
+    glabel.className = 'amigo-grade-grupo-label';
+    glabel.textContent = grp === '★' ? '★  ESPECIAIS' : 'GRUPO  ' + grp;
+    grupoDiv.appendChild(glabel);
+
+    secoes.forEach(({ sec, uteis }) => {
+      const row = document.createElement('div');
+      row.className = 'amigo-row';
+
+      const label = document.createElement('div');
+      label.className = 'amigo-row-label';
+      label.innerHTML = '<span class="amigo-row-flag">' + sec.flag + '</span><span class="amigo-row-name">' + sec.nome + '</span>';
+      row.appendChild(label);
+
+      const cells = document.createElement('div');
+      cells.className = 'amigo-cells';
+
+      uteis.forEach(i => {
+        const cell = document.createElement('div');
+        cell.className = 'acell util';
+        const lbl = getLabel(sec, i);
+        cell.textContent = sec.tipo === 'esp' ? lbl : (sec.id.toUpperCase() + i);
+        cell.title = lbl + ' · ' + nameB + ' precisa';
+        cells.appendChild(cell);
+      });
+
+      row.appendChild(cells);
+
+      const cnt = document.createElement('div');
+      cnt.className = 'grade-row-count';
+      cnt.textContent = uteis.length > 0 ? String(uteis.length) : '—';
+      cnt.style.color = uteis.length > 0 ? 'var(--a-color)' : 'var(--muted)';
+      row.appendChild(cnt);
+
+      grupoDiv.appendChild(row);
+    });
+
+    container.appendChild(grupoDiv);
+  });
+}
+
+window.triggerPrintCompare = function(mode) {
+  mode = mode || 'print';
+  const dados = getCompareUteis();
+  const date = new Date().toLocaleDateString('pt-BR');
+  const accent = '#8b1a1a';
+  const nameA = personName(compareA);
+  const nameB = personName(compareB);
+  const total = dados.reduce((s,d)=>s+d.uteis.length, 0);
+
+  if (!total) {
+    alert(nameA + ' não tem nenhuma figurinha repetida que ' + nameB + ' precise ainda.');
+    return;
+  }
+
+  const css = `
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#fff;color:#000;padding:10mm 10mm}
+    @page{size:A3 portrait;margin:0}
+    .hdr{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:3px solid ${accent};padding-bottom:6px;margin-bottom:8px}
+    .htitle{font-family:'Bebas Neue',sans-serif;font-size:22pt;letter-spacing:2px;color:${accent};line-height:1}
+    .hsub{font-size:8pt;color:#666;margin-top:2px}
+    .leg{display:flex;gap:14px;align-items:center;font-size:8pt;color:#444}
+    .li{display:flex;align-items:center;gap:4px}
+    .lb{width:10px;height:10px;border:1px solid #999;border-radius:2px;display:inline-block;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .lbu{background:${accent};border-color:${accent}}
+    .glabel{font-family:'Bebas Neue',sans-serif;font-size:8pt;letter-spacing:3px;color:#888;border-top:1.5px solid #ddd;padding:5pt 0 2pt;margin-top:4pt}
+    .gblock{break-inside:avoid}
+    .row{display:flex;align-items:center;gap:3pt;margin-bottom:2pt;break-inside:avoid}
+    .rlabel{display:flex;align-items:center;gap:3pt;width:95pt;min-width:95pt}
+    .rflag{font-size:10pt}
+    .rname{font-size:7pt;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cells{display:flex;gap:2pt;flex-wrap:wrap}
+    .cell{width:13pt;height:13pt;border:0.75pt solid #ccc;border-radius:2pt;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:6.5pt;flex-shrink:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .cell.u{background:${accent} !important;border-color:${accent} !important;color:#fff !important}
+    .rcnt{font-size:6.5pt;color:#999;width:28pt;text-align:right;flex-shrink:0}
+  `;
+
+  let body = '<div class="hdr"><div><div class="htitle">⚽ ' + nameA + ' → ' + nameB + '</div><div class="hsub">' + total + ' figurinha' + (total!==1?'s':'') + ' que ' + nameB + ' precisa · ' + date + '</div></div><div class="leg"><div class="li"><div class="lb lbu"></div> ' + nameA + ' tem repetida</div></div></div>';
+
+  const grupos = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+  grupos.forEach(grp => {
+    const secoes = dados.filter(d => d.sec.grp === grp);
+    if (!secoes.length) return;
+    body += '<div class="glabel">' + (grp==='★'?'★   ESPECIAIS':'GRUPO   '+grp) + '</div><div class="gblock">';
+    secoes.forEach(({ sec, uteis }) => {
+      body += '<div class="row"><div class="rlabel"><span class="rflag">' + sec.flag + '</span><span class="rname">' + sec.nome + '</span></div><div class="cells">';
+      uteis.forEach(i => {
+        const lbl = getLabel(sec, i);
+        const txt = sec.tipo === 'esp' ? lbl : (sec.id.toUpperCase() + i);
+        body += '<div class="cell u">' + txt + '</div>';
+      });
+      body += '</div><div class="rcnt">' + uteis.length + '</div></div>';
+    });
+    body += '</div>';
+  });
+
+  const fullHTML = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Copa 2026 — ' + nameA + ' para ' + nameB + '</title><style>' + css + '</style></head><body>' + body + '</body></html>';
+
+  if (mode === 'image') {
+    downloadAsImage(fullHTML, 'comparar-' + nameA.toLowerCase() + '-' + nameB.toLowerCase());
+  } else {
+    printHTML(fullHTML);
+  }
+};
+
+// ── SIDEBAR ──
+function renderSidebar() {
+  const sb = document.getElementById('sidebar');
+  sb.innerHTML = '';
+  const playerClass = isFriend(currentPlayer) ? 'a' : currentPlayer;
+  GRUPOS.forEach(grp => {
+    const lbl = document.createElement('div');
+    lbl.className = 'sb-group-label';
+    lbl.textContent = grp==='★' ? '★ Especiais' : 'Grupo ' + grp;
+    sb.appendChild(lbl);
+
+    SECOES.filter(s => s.grp===grp).forEach(s => {
+      let col=0, dup=0;
+      for (let i=1; i<=s.total; i++) {
+        const v = state[key(s.id,i,currentPlayer)] || 'nao';
+        if (v==='sim') col++; else if (v==='dupla') dup++;
+      }
+      const item = document.createElement('div');
+      const isActive = (currentGrp===grp || currentGrp==='todos');
+      item.className = `sb-item${isActive && s.grp===currentGrp ? ` active-${playerClass}` : ''}`;
+
+      const pct = isFriend(currentPlayer) ? 0 : Math.round((col+dup)/s.total*100);
+      let statsHtml = '';
+      if (isFriend(currentPlayer)) {
+        statsHtml = `<span style="color:var(--a-color);font-weight:700">${dup} rep.</span>`;
+      } else {
+        statsHtml = `<span style="color:var(--${currentPlayer==='r'?'azul':'verde'});font-weight:700">${col+dup}</span><span>/</span><span>${s.total}</span>` +
+          (dup > 0 ? `<span style="color:var(--dup-color);font-weight:700">${dup}✕</span>` : '');
+      }
+
+      item.innerHTML =
+        `<span class="sb-flag">${s.flag}</span>` +
+        `<div class="sb-info">` +
+          `<div class="sb-nome">${s.nome}</div>` +
+          `<div class="sb-sub">${statsHtml}</div>` +
+          (!isFriend(currentPlayer) ? `<div class="sb-bar"><div class="sb-bar-fill sb-bar-${currentPlayer}" style="width:${pct}%"></div></div>` : '') +
+        `</div>`;
+
+      item.onclick = () => {
+        currentGrp = s.grp;
+        renderGrupos();
+        renderGrade();
+        renderSidebar();
+        // Scroll para a linha deste time na grade
+        setTimeout(() => {
+          const rows = document.querySelectorAll('.grade-row');
+          rows.forEach(row => {
+            if (row.querySelector('.grade-row-name') &&
+                row.querySelector('.grade-row-name').textContent === s.nome) {
+              row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          });
+        }, 50);
+      };
+      sb.appendChild(item);
+    });
+  });
+}
+
+// ── IMPRESSÃO ──
+// ── IMPRESSÃO RÁPIDA: LISTA DE FALTANTES (grade) ──
+window.triggerPrintFaltantes = function(p, mode) {
+  mode = mode || 'print';
+  const name = p==='r' ? 'Rafael' : 'Leonardo';
+  const date = new Date().toLocaleDateString('pt-BR');
+  const accent = p==='r' ? '#002776' : '#009c3b';
+
+  const filterSelect = document.getElementById('quick-filter-faltam');
+  const maxFaltam = filterSelect ? parseInt(filterSelect.value, 10) : 0; // 0 = todas
+
+  const grupos = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+  const blocos = [];
+  let totalFaltam = 0;
+
+  grupos.forEach(grp => {
+    const secoes = SECOES.filter(s => s.grp === grp);
+    if (!secoes.length) return;
+    const linhasGrupo = [];
+    secoes.forEach(sec => {
+      const faltantes = [];
+      for (let i=1; i<=sec.total; i++) {
+        const v = state[key(sec.id,i,p)] || 'nao';
+        const tem = v === 'sim' || v === 'dupla';
+        if (!tem) {
+          const lbl = sec.tipo === 'esp' ? getLabel(sec, i) : (sec.id.toUpperCase() + i);
+          faltantes.push(lbl);
+        }
+      }
+      // Aplica filtro "faltam até X" (0 = sem filtro, mostra todas)
+      if (faltantes.length && (maxFaltam === 0 || faltantes.length <= maxFaltam)) {
+        totalFaltam += faltantes.length;
+        linhasGrupo.push({ sec, faltantes });
+      }
+    });
+    if (linhasGrupo.length) blocos.push({ grp, linhasGrupo });
+  });
+
+  const css = `
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#fff;color:#000;padding:10mm 10mm}
+    @page{size:A3 portrait;margin:0}
+    .hdr{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:3px solid ${accent};padding-bottom:6px;margin-bottom:8px}
+    .htitle{font-family:'Bebas Neue',sans-serif;font-size:26pt;letter-spacing:2px;color:${accent};line-height:1}
+    .hsub{font-size:8pt;color:#666;margin-top:2px}
+    .glabel{font-family:'Bebas Neue',sans-serif;font-size:8pt;letter-spacing:3px;color:#888;border-top:1.5px solid #ddd;padding:5pt 0 2pt;margin-top:4pt}
+    .gblock{break-inside:avoid}
+    .row{display:flex;align-items:center;gap:3pt;margin-bottom:2pt;page-break-inside:avoid;break-inside:avoid}
+    .rlabel{display:flex;align-items:center;gap:3pt;width:90pt;min-width:90pt}
+    .rflag{font-size:10pt;line-height:1}
+    .rname{font-size:7pt;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cells{display:flex;gap:1.5pt;flex-wrap:nowrap}
+    .cell{width:19pt;height:13.5pt;border:0.75pt solid ${accent};border-radius:2pt;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:5.8pt;letter-spacing:0.2pt;color:#000;background:#fff;flex-shrink:0}
+    .rcnt{font-size:6.5pt;color:#999;width:22pt;text-align:right;flex-shrink:0}
+  `;
+
+  const filtroTxt = maxFaltam > 0 ? ` · times faltando até ${maxFaltam}` : '';
+  let body = `<div class="hdr"><div><div class="htitle">📋 Faltam — ${name}</div><div class="hsub">${totalFaltam} figurinhas faltantes${filtroTxt} · ${date}</div></div></div>`;
+
+  if (!totalFaltam) {
+    const msg = maxFaltam > 0
+      ? `Nenhum time está faltando até ${maxFaltam} figurinha${maxFaltam!==1?'s':''} para o(a) ${name}.`
+      : `🎉 ${name} já tem todas as figurinhas!`;
+    body += `<div style="text-align:center;padding:30pt;font-size:14pt;color:#666">${msg}</div>`;
+  } else {
+    blocos.forEach(({ grp, linhasGrupo }) => {
+      body += `<div class="glabel">${grp==='★'?'★   ESPECIAIS':'GRUPO   '+grp}</div><div class="gblock">`;
+      linhasGrupo.forEach(({ sec, faltantes }) => {
+        body += `<div class="row"><div class="rlabel"><span class="rflag">${sec.flag}</span><span class="rname">${sec.nome}</span></div><div class="cells">`;
+        faltantes.forEach(lbl => {
+          body += `<div class="cell">${lbl}</div>`;
+        });
+        body += `</div><div class="rcnt">${faltantes.length}</div></div>`;
+      });
+      body += `</div>`;
+    });
+  }
+
+  const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Faltantes — ${name}</title><style>${css}</style></head><body>${body}</body></html>`;
+  if (mode === 'image') {
+    downloadAsImage(fullHTML, 'faltantes-' + name.toLowerCase());
+  } else {
+    printHTML(fullHTML);
+  }
+};
+
+window.triggerPrintSheet = function(p, mode) {
+  mode = mode || 'print';
+  const rows = SECOES.map(sec => {
+    const cells = [];
+    for (let i=1; i<=sec.total; i++) {
+      const v = state[key(sec.id,i,p)] || 'nao';
+      const has = v==='sim' || v==='dupla';
+      const lbl = sec.tipo === 'esp' ? getLabel(sec, i) : (sec.id.toUpperCase() + i);
+      cells.push({ has, lbl });
+    }
+    return { sec, cells };
+  });
+
+  const name = p==='r' ? 'Rafael' : 'Leonardo';
+  const date = new Date().toLocaleDateString('pt-BR');
+  const accent = p==='r' ? '#002776' : '#009c3b';
+
+  const css = `
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#fff;color:#000;padding:10mm 10mm}
+    @page{size:A3 portrait;margin:0}
+    .hdr{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:3px solid ${accent};padding-bottom:6px;margin-bottom:8px}
+    .htitle{font-family:'Bebas Neue',sans-serif;font-size:26pt;letter-spacing:2px;color:${accent};line-height:1}
+    .hsub{font-size:8pt;color:#666;margin-top:2px}
+    .leg{display:flex;gap:14px;align-items:center;font-size:8pt;color:#444}
+    .li{display:flex;align-items:center;gap:4px}
+    .lb{width:10px;height:10px;border:1px solid #999;border-radius:2px;display:inline-block}
+    .lbf{background:${accent};border-color:${accent}}
+    .glabel{font-family:'Bebas Neue',sans-serif;font-size:8pt;letter-spacing:3px;color:#888;border-top:1.5px solid #ddd;padding:5pt 0 2pt;margin-top:4pt}
+    .gblock{break-inside:avoid}
+    .row{display:flex;align-items:center;gap:3pt;margin-bottom:2pt;page-break-inside:avoid;break-inside:avoid}
+    .rlabel{display:flex;align-items:center;gap:3pt;width:90pt;min-width:90pt}
+    .rflag{font-size:10pt;line-height:1}
+    .rname{font-size:7pt;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cells{display:flex;gap:1.5pt;flex-wrap:nowrap}
+    .cell{width:19pt;height:13.5pt;border:0.75pt solid #ccc;border-radius:2pt;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:5.8pt;letter-spacing:0.2pt;color:#000;background:#fff;flex-shrink:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .cell.f{background:${accent} !important;border-color:${accent} !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .rcnt{font-size:6.5pt;color:#999;width:22pt;text-align:right;flex-shrink:0}
+  `;
+
+  let body = `<div class="hdr"><div><div class="htitle">⚽ Copa 2026 — ${name}</div><div class="hsub">Folha de consulta para troca · ${date}</div></div><div class="leg"><div class="li"><div class="lb lbf"></div> Tem</div><div class="li"><div class="lb"></div> Falta</div></div></div>`;
+
+  GRUPOS.forEach(grp => {
+    const secoes = rows.filter(r => r.sec.grp===grp);
+    if (!secoes.length) return;
+    body += `<div class="glabel">${grp==='★'?'★   ESPECIAIS':'GRUPO   '+grp}</div><div class="gblock">`;
+    secoes.forEach(({ sec, cells }) => {
+      const col = cells.filter(c => c.has).length;
+      body += `<div class="row"><div class="rlabel"><span class="rflag">${sec.flag}</span><span class="rname">${sec.nome}</span></div><div class="cells">`;
+      cells.forEach(c => {
+        body += `<div class="cell${c.has?' f':''}">${c.has?'':c.lbl}</div>`;
+      });
+      body += `</div><div class="rcnt">${col}/${cells.length}</div></div>`;
+    });
+    body += `</div>`;
+  });
+
+  const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Copa 2026 — ${name}</title><style>${css}</style></head><body>${body}</body></html>`;
+
+  if (mode === 'image') {
+    downloadAsImage(fullHTML, 'figurinhas-' + name.toLowerCase());
+  } else {
+    printHTML(fullHTML);
+  }
+};
+
+// ── COMPARAR COM LISTA ──
+window.comparePasteList = function() {
+  const input = document.getElementById('paste-input').value.trim();
+  if (!input) {
+    alert('Cole uma lista de figurinhas primeiro!');
+    return;
+  }
+  const pastePerson = document.getElementById('paste-person').value;
+  const linhas = input.split('\n').map(l => l.trim().toUpperCase()).filter(l => l);
+  const faltantes = [];
+  const invalidas = [];
+  linhas.forEach(lbl => {
+    if (labelMap[lbl]) {
+      faltantes.push(lbl);
+    } else {
+      invalidas.push(lbl);
+    }
+  });
+  if (invalidas.length) {
+    const msg = invalidas.length > 5
+      ? `${invalidas.slice(0,5).join(', ')} ... (${invalidas.length} inválidas)`
+      : invalidas.join(', ');
+    alert(`⚠️ Figurinhas não encontradas: ${msg}`);
+  }
+  if (!faltantes.length) return;
+  const uteis = [];
+  faltantes.forEach(lbl => {
+    const { secId, i } = labelMap[lbl];
+    const minhaDupla = state[key(secId, i, pastePerson)] || 'nao';
+    if (minhaDupla === 'dupla') {
+      const sec = SECOES.find(s => s.id === secId);
+      uteis.push({ sec, i, lbl });
+    }
+  });
+  renderPasteResult(faltantes, uteis, invalidas, pastePerson);
+};
+
+function renderPasteResult(faltantes, uteis, invalidas, person) {
+  const container = document.getElementById('paste-result');
+  const name = personName(person);
+  container.innerHTML = '';
+  const summary = document.createElement('div');
+  summary.style.cssText = 'padding:12px; background:var(--surface2); border-bottom:1px solid var(--border); font-size:13px; font-weight:600;';
+  summary.innerHTML = `
+    📋 <strong>${faltantes.length}</strong> figurinhas na lista · 
+    ✅ <strong style="color:var(--verde)">${uteis.length}</strong> ${name} tem pra vender · 
+    ❌ <strong style="color:var(--muted)">${faltantes.length - uteis.length}</strong> não tem
+    ${invalidas.length ? `· ⚠️ <strong>${invalidas.length}</strong> inválidas` : ''}
+  `;
+  container.appendChild(summary);
+  if (!uteis.length) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'padding:20px; text-align:center; color:var(--muted); font-size:12px;';
+    empty.textContent = `${name} não tem nenhuma das figurinhas dessa lista como repetida.`;
+    container.appendChild(empty);
+    return;
+  }
+  const grupos = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+  grupos.forEach(grp => {
+    const linhas = uteis.filter(u => u.sec.grp === grp);
+    if (!linhas.length) return;
+    const grupoDiv = document.createElement('div');
+    grupoDiv.style.borderBottom = '1px solid var(--border)';
+    const glabel = document.createElement('div');
+    glabel.style.cssText = 'font-family:Bebas Neue; font-size:11px; letter-spacing:2px; color:var(--muted); background:var(--surface2); padding:4px 10px; border-bottom:1px solid var(--border); text-transform:uppercase;';
+    glabel.textContent = grp === '★' ? '★  ESPECIAIS' : 'GRUPO  ' + grp;
+    grupoDiv.appendChild(glabel);
+    linhas.forEach(({ sec, i, lbl }) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex; align-items:center; padding:8px 10px; border-bottom:1px solid var(--border); gap:10px;';
+      const flag = document.createElement('span');
+      flag.textContent = sec.flag;
+      flag.style.fontSize = '16px';
+      row.appendChild(flag);
+      const nome = document.createElement('span');
+      nome.textContent = `${sec.nome} · ${lbl}`;
+      nome.style.cssText = 'flex:1; font-size:12px; font-weight:600;';
+      row.appendChild(nome);
+      const badge = document.createElement('span');
+      badge.textContent = '✓ VOCÊ TEM';
+      badge.style.cssText = 'background:var(--verde); color:#fff; padding:3px 8px; border-radius:5px; font-size:10px; font-weight:700; letter-spacing:0.5px; white-space:nowrap;';
+      row.appendChild(badge);
+      grupoDiv.appendChild(row);
+    });
+    container.appendChild(grupoDiv);
+  });
+}
+
+window.visualizarListaAmigo = function() {
+  const nomeAmigo = document.getElementById('viz-friend-name').value.trim();
+  const input = document.getElementById('viz-input').value.trim();
+  
+  if (!nomeAmigo) {
+    alert('Digite o nome do amigo!');
+    return;
+  }
+  if (!input) {
+    alert('Cole uma lista de figurinhas!');
+    return;
+  }
+
+  const linhas = input.split('\n').map(l => l.trim().toUpperCase()).filter(l => l);
+  const figurinhas = [];
+  const invalidas = [];
+
+  linhas.forEach(lbl => {
+    if (labelMap[lbl]) {
+      figurinhas.push(lbl);
+    } else {
+      invalidas.push(lbl);
+    }
+  });
+
+  if (invalidas.length) {
+    const msg = invalidas.length > 5
+      ? `${invalidas.slice(0,5).join(', ')} ... (${invalidas.length} inválidas)`
+      : invalidas.join(', ');
+    console.warn(`⚠️ Figurinhas não encontradas: ${msg}`);
+  }
+
+  if (!figurinhas.length) {
+    alert('Nenhuma figurinha válida encontrada!');
+    return;
+  }
+
+  renderVizGrade(nomeAmigo, figurinhas);
+};
+
+function renderVizGrade(nomeAmigo, figurinhas) {
+  const container = document.getElementById('viz-result');
+  container.innerHTML = '';
+
+  // Cabeçalho
+  const header = document.createElement('div');
+  header.style.cssText = 'background:var(--surface); border:2px solid var(--border); border-radius:12px; padding:1rem; margin-bottom:1rem;';
+  header.innerHTML = `
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:1px; color:var(--a-color);">👤 ${nomeAmigo}</div>
+    <div style="font-size:12px; color:var(--muted); margin-top:4px;">${figurinhas.length} figurinhas</div>
+  `;
+  container.appendChild(header);
+
+  // Monta mapa de figurinhas com seu status
+  const figMap = {};
+  figurinhas.forEach(lbl => {
+    figMap[lbl] = true;
+  });
+
+  // Agrupa por seção
+  const grupos = ['★','A','B','C','D','E','F','G','H','I','J','K','L'];
+  
+  grupos.forEach(grp => {
+    const secoes = SECOES.filter(s => s.grp === grp);
+    if (!secoes.length) return;
+
+    const grupoDiv = document.createElement('div');
+    grupoDiv.style.cssText = 'background:var(--surface); border:2px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:1rem;';
+
+    // Label do grupo
+    const label = document.createElement('div');
+    label.style.cssText = 'font-family:"Bebas Neue",sans-serif; font-size:11px; letter-spacing:3px; color:var(--muted); background:var(--surface2); padding:4px 10px; border-bottom:1px solid var(--border); text-transform:uppercase;';
+    label.textContent = grp === '★' ? '★  ESPECIAIS' : 'GRUPO  ' + grp;
+    grupoDiv.appendChild(label);
+
+    // Linhas de times/seções
+    secoes.forEach(sec => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex; align-items:center; border-bottom:1px solid var(--border); min-height:34px; padding:0;';
+
+      // Label do time
+      const rowLabel = document.createElement('div');
+      rowLabel.style.cssText = 'display:flex; align-items:center; gap:5px; width:130px; min-width:130px; padding:4px 8px; border-right:1px solid var(--border); flex-shrink:0;';
+      rowLabel.innerHTML = `<span style="font-size:16px;">${sec.flag}</span><span style="font-size:10px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${sec.nome}</span>`;
+      row.appendChild(rowLabel);
+
+      // Células das figurinhas
+      const cells = document.createElement('div');
+      cells.style.cssText = 'display:flex; flex:1; gap:2px; padding:3px 6px; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;';
+      cells.style.scrollbarWidth = 'none';
+
+      for (let i = 1; i <= sec.total; i++) {
+        const lbl = getLabel(sec, i);
+        const temFiguinha = figMap[lbl];
+
+        const cell = document.createElement('div');
+        cell.style.cssText = `
+          width:42px; height:28px; border-radius:4px; border:1.5px solid #ddd;
+          display:flex; align-items:center; justify-content:center;
+          font-family:'Bebas Neue',sans-serif; font-size:9px; letter-spacing:0.3px;
+          color:#1a1a1a; background:${temFiguinha ? '#009c3b' : '#fafafa'};
+          cursor:pointer; flex-shrink:0; transition:transform 0.08s;
+          user-select:none;
+        `;
+        if (temFiguinha) {
+          cell.style.color = '#fff';
+          cell.style.borderColor = '#009c3b';
+        }
+        cell.textContent = temFiguinha ? '' : lbl;
+        cell.title = lbl;
+        cells.appendChild(cell);
+      }
+      row.appendChild(cells);
+
+      grupoDiv.appendChild(row);
+    });
+
+    container.appendChild(grupoDiv);
+  });
+}
+
+window.clearVizInput = function() {
+  document.getElementById('viz-friend-name').value = '';
+  document.getElementById('viz-input').value = '';
+  document.getElementById('viz-result').innerHTML = '';
+};
+
+
+// ── FALTANTES CONSOLIDADOS ──
+function getFaltantesConsolidados() {
+  const faltantes = [];
+  SECOES.forEach(sec => {
+    for (let i=1; i<=sec.total; i++) {
+      const r = state[key(sec.id,i,'r')] || 'nao';
+      const l = state[key(sec.id,i,'l')] || 'nao';
+      const rTem = r === 'sim' || r === 'dupla';
+      const lTem = l === 'sim' || l === 'dupla';
+      // Se um dos dois não tem, entra na lista
+      if (!rTem || !lTem) {
+        const lbl = getLabel(sec, i);
+        faltantes.push(lbl);
+      }
+    }
+  });
+  return faltantes;
+}
+
+function renderFaltantesConsolidados() {
+  const faltantes = getFaltantesConsolidados();
+  const listEl = document.getElementById('faltantes-consolidados-list');
+  if (!listEl) return;
+  listEl.textContent = faltantes.join('\n');
+}
+
+window.copiarFaltantesConsolidados = function() {
+  const faltantes = getFaltantesConsolidados();
+  const texto = faltantes.join('\n');
+  navigator.clipboard.writeText(texto).then(() => {
+    alert(`✅ ${faltantes.length} figurinhas copiadas!`);
+  }).catch(() => {
+    alert('❌ Erro ao copiar. Tente selecionar manualmente.');
+  });
+};
+
+window.triggerPrintFaltantesConsolidados = function(mode) {
+  mode = mode || 'print';
+  const faltantes = getFaltantesConsolidados();
+  const date = new Date().toLocaleDateString('pt-BR');
+  
+  if (!faltantes.length) {
+    alert('🎉 Não há figurinhas faltantes!');
+    return;
+  }
+
+  const css = `
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#fff;color:#000;padding:15mm 15mm}
+    @page{size:A4 portrait;margin:0}
+    .hdr{border-bottom:4px solid #002776;padding-bottom:10px;margin-bottom:20px}
+    .htitle{font-family:'Bebas Neue',sans-serif;font-size:28pt;letter-spacing:2px;color:#002776;line-height:1}
+    .hsub{font-size:10pt;color:#666;margin-top:4px}
+    .lista{font-family:'Courier New',monospace;font-size:11pt;line-height:2;color:#000}
+    .item{padding:2px 0}
+  `;
+
+  let body = `<div class="hdr"><div class="htitle">📋 Faltantes</div><div class="hsub">Rafael + Leonardo · ${faltantes.length} figurinhas · ${date}</div></div><div class="lista">`;
+  faltantes.forEach(lbl => {
+    body += `<div class="item">${lbl}</div>`;
+  });
+  body += `</div>`;
+
+  const fullHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Faltantes Consolidados</title><style>${css}</style></head><body>${body}</body></html>`;
+
+  if (mode === 'image') {
+    downloadAsImage(fullHTML, 'faltantes-consolidados');
+  } else {
+    printHTML(fullHTML);
+  }
+};
+
+// ── RENDER ALL ──
+function renderAll() {
+  renderPlayerBar();
+  renderGrupos();
+  renderGrade();
+  renderStats();
+  renderTrocas();
+  renderSidebar();
+  renderFaltantesConsolidados();
+}
+
+window.setPlayer = function(p) {
+  currentPlayer = p;
+  renderPlayerBar();
+  renderAll();
+};
+
+renderAll();
+</script>
+</body>
+</html>
